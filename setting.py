@@ -57,15 +57,46 @@ def drawTile(tileStack,sequence):
 # print(drawTile(tileStack111,2))
 # print(drawTile(tileStack111,3))
 
-def showtile(screen,pTile,playerNo):
+def showtile(screen,pTile,playerNo): # will return a list of hand tile object
     tileObjList = []
-    for i in range(len(pTile)):
-        tileObj = tile(screen,pTile[i],False)
-        if playerNo == 1:
+    if playerNo == 1:
+        for i in range(len(pTile)):
+            tileObj = tile(screen,pTile[i],False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/"+pTile[i]+".png")
-            tileObj.image = pygame.transform.smoothscale(tileObj.image,(80,100))
-            tileObj.rect.inflate_ip(-124, -148)
-            tileObj.rect.left = i * 80
-            tileObj.screen_rect = screen.get_rect()
-            tileObj.rect.bottom = tileObj.screen_rect.bottom
-        tileObjList.append(tileObj)
+            tileObj.image = pygame.transform.smoothscale(tileObj.image,(60,75))
+            tileObj.rect.left = 180 + i * 60
+            tileObj.rect.top = 640
+            tileObj.blitSelf()
+            tileObjList.append(tileObj)
+    elif playerNo == 2:
+        for i in range(len(pTile)):
+            tileObj = tile(screen, pTile[i], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,90)
+            tileObj.rect.bottom = 660 + i * 48
+            tileObj.rect.left = 1060
+            tileObj.blitSelf()
+            tileObjList.append(tileObj)
+    elif playerNo == 3:
+        for i in range(len(pTile)):
+            tileObj = tile(screen, pTile[i], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,180)
+            tileObj.rect.top = 140 - 60
+            tileObj.rect.left = 940 - 48 - i*48
+            tileObj.blitSelf()
+            tileObjList.append(tileObj)
+
+    elif playerNo == 4:
+        for i in range(len(pTile)):
+            tileObj = tile(screen, pTile[i], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,270)
+            tileObj.rect.top = 80 + i * 48
+            tileObj.rect.left = 80
+            tileObj.blitSelf()
+            tileObjList.append(tileObj)
+    return tileObjList

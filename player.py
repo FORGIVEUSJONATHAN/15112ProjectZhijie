@@ -5,7 +5,8 @@ class player:
         self.hT = hT
         self.aT = aT
         self.dT = dT
-    def drawTile(self,tileStack):
+
+    def drawTile(self,tileStack): # draw a tile from the stack
         self.hT.append(tileStack[0])
         tileStack.pop(0)
 

@@ -1,7 +1,7 @@
 import sys
 import pygame
 import setting
-
+import buttons
 class wnd1:
     def __init__(self):
         pygame.init()
@@ -46,15 +46,33 @@ class wnd2:
         tileRect.x = 100
         tileRect.y = 700
         print(tileRect)
-
+        tileStack111 = setting.tileStack(3)
+        pTile1 = setting.drawTile(tileStack111, 1)
 
 
         running = True
         while running:
-            screen.fill((2, 1, 255))
-            tileStack111 = setting.tileStack(3)
-            pTile1 = setting.drawTile(tileStack111,1)
+            screen.fill((244, 244, 255))
+
             setting.showtile(screen,pTile1,1)
+            setting.showtile(screen,pTile1,2)
+            setting.showtile(screen,pTile1,3)
+
+            setting.showtile(screen,pTile1,4)
+
+            square = buttons.square(screen)
+            square.blitSelf()
+            chi = buttons.chi(screen)
+            chi.blitSelf()
+            peng = buttons.peng(screen)
+            peng.blitSelf()
+            gang = buttons.gang(screen)
+            gang.blitSelf()
+            hu = buttons.hu(screen)
+            hu.blitSelf()
+            guo = buttons.guo(screen)
+            guo.blitSelf()
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
