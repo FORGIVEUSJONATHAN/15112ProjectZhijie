@@ -38,6 +38,19 @@ def tileStack(type):
 
 # print(tileStack(3))
 
+def tileSorting(tilelist): #sorttile
+    for i in range(len(tilelist)):
+        index = i
+        min = int(tilelist[i][2:])
+        for j in range(i+1,len(tilelist)):
+            num = int(tilelist[j][2:])
+            if num < min:
+                min = num
+                index = j
+        tilelist[i],tilelist[index] = tilelist[index],tilelist[i]
+    return tilelist
+
+# print(tileSorting(['3-1', '3-12', '3-13', '3-14', '3-18', '3-2', '3-22', '3-23', '3-23', '3-29', '3-3', '3-30', '3-5', '3-8']))
 
 def drawTile(tileStack,sequence):
     pTile = []
@@ -49,7 +62,7 @@ def drawTile(tileStack,sequence):
         for i in range(13):
             pTile.append(tileStack[0]) # add the first element into list
             tileStack.pop(0) #remove the first element of the list
-    pTile.sort()
+    pTile = tileSorting(pTile)
     return pTile
 
 # tileStack111 = tileStack(3)
@@ -68,6 +81,8 @@ def showtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.rect.top = 640
             tileObj.blitSelf()
             tileObjList.append(tileObj)
+
+
     elif playerNo == 2:
         for i in range(len(pTile)):
             tileObj = tile(screen, pTile[i], False)
@@ -78,6 +93,8 @@ def showtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.rect.left = 1060
             tileObj.blitSelf()
             tileObjList.append(tileObj)
+
+
     elif playerNo == 3:
         for i in range(len(pTile)):
             tileObj = tile(screen, pTile[i], False)
@@ -89,6 +106,7 @@ def showtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.blitSelf()
             tileObjList.append(tileObj)
 
+
     elif playerNo == 4:
         for i in range(len(pTile)):
             tileObj = tile(screen, pTile[i], False)
@@ -99,4 +117,5 @@ def showtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.rect.left = 80
             tileObj.blitSelf()
             tileObjList.append(tileObj)
+
     return tileObjList

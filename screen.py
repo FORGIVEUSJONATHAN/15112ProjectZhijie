@@ -9,14 +9,14 @@ class wnd1:
         icon = pygame.image.load("pic/tile_type4_300ppi/4-33.png")
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode((1200, 800),pygame.RESIZABLE)
-        start = pygame.image.load("pic/开始.png")
+        start = pygame.image.load("pic/Start.png")
         start = pygame.transform.scale(start, (200, 100))
         startRect = start.get_rect()
         startRect.centerx = screen.get_rect().centerx
         startRect.centery = screen.get_rect().centery
         running = True
         while running:
-            screen.fill((255, 123, 255))
+            screen.fill((146, 168, 209))
             screen.blit(start, startRect)
 
             for event in pygame.event.get():
@@ -49,7 +49,6 @@ class wnd2:
         tileStack111 = setting.tileStack(3)
         pTile1 = setting.drawTile(tileStack111, 1)
 
-
         running = True
         while running:
             screen.fill((244, 244, 255))
@@ -57,7 +56,6 @@ class wnd2:
             setting.showtile(screen,pTile1,1)
             setting.showtile(screen,pTile1,2)
             setting.showtile(screen,pTile1,3)
-
             setting.showtile(screen,pTile1,4)
 
             square = buttons.square(screen)
