@@ -1,5 +1,5 @@
 import random
-
+from player import *
 import pygame
 
 from tile import tile
@@ -60,7 +60,8 @@ def drawTile(tileStack,sequence):
             tileStack.pop(0) #remove the first element of the list
     else:
         for i in range(13):
-            pTile.append(tileStack[0]) # add the first element into list
+            pTile.append(tileStack[0])
+            print(pTile)# add the first element into list
             tileStack.pop(0) #remove the first element of the list
     pTile = tileSorting(pTile)
     return pTile
@@ -70,7 +71,26 @@ def drawTile(tileStack,sequence):
 # print(drawTile(tileStack111,2))
 # print(drawTile(tileStack111,3))
 
-def showtile(screen,pTile,playerNo): # will return a list of hand tile object
+def drawTileAll():
+    tileStackAll = tileStack(3)
+    sequenceList = [1,2,3,4]
+    random.shuffle(sequenceList)
+    print(sequenceList)
+    ## a random list to determine the sequence
+    pTile1 = drawTile(tileStackAll,sequenceList[0])
+    pTile2 = drawTile(tileStackAll,sequenceList[1])
+    pTile3 = drawTile(tileStackAll,sequenceList[2])
+    pTile4 = drawTile(tileStackAll,sequenceList[3])
+    player1 = player("AA","HUMAN",sequenceList[0],pTile1,[],[],[])
+    player2 = player("BB","AI",sequenceList[1],pTile2,[],[],[])
+    player3 = player("CC","AI",sequenceList[2],pTile3,[],[],[])
+    player4 = player("DD","AI",sequenceList[3],pTile4,[],[],[])
+    return tileStackAll, player1, player2, player3, player4
+    # return the player objects and the remaining tileStack
+
+
+
+def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
     tileObjList = []
     if playerNo == 1:
         for i in range(len(pTile)):
@@ -119,3 +139,81 @@ def showtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObjList.append(tileObj)
 
     return tileObjList
+
+
+def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerNo is the player sequence
+    num = len(dTlist)
+    hTObj.image = pygame.image.load("pic/tile_type3_300ppi/" + hTObj.name + ".png")
+    hTObj.image = pygame.transform.smoothscale(hTObj.image, (30, 40))
+    if playerNo == 1:
+        if num < 8:
+            hTObj.rect.top = 510
+            hTObj.rect.left = 480+num*30
+        elif num < 16:
+            hTObj.rect.top = 510+40
+            hTObj.rect.left = 480+(num-8)*30
+        elif num < 24:
+            hTObj.rect.top = 510+80
+            hTObj.rect.left = 480+(num-16)*30
+
+    elif playerNo == 2:
+        hTObj.image = pygame.transform.rotate(hTObj.image,90)
+
+        if num < 8:
+            hTObj.rect.top = 630 - num*30
+            hTObj.rect.left = 720
+        elif num < 16:
+            hTObj.rect.top = 630 - (num-8)*30
+            hTObj.rect.left = 720 + 40
+        elif num < 24:
+            hTObj.rect.top = 630 - (num-16)*30
+            hTObj.rect.left = 720 + 80
+
+    elif playerNo == 3:
+        hTObj.image = pygame.transform.rotate(hTObj.image,180)
+
+        if num < 8:
+            hTObj.rect.top = 230
+            hTObj.rect.left = 690 - num*30
+        elif num < 16:
+            hTObj.rect.top = 200
+            hTObj.rect.left = 690 - (num-8)*30
+        elif num < 24:
+            hTObj.rect.top = 170
+            hTObj.rect.left = 690 - (num-16)*30
+
+    elif playerNo == 4:
+        hTObj.image = pygame.transform.rotate(hTObj.image,270)
+
+        if num < 8:
+            hTObj.rect.top = 270 + num*30
+            hTObj.rect.left = 440
+        elif num < 16:
+            hTObj.rect.top = 270 + (num-8)*30
+            hTObj.rect.left = 400
+        elif num < 24:
+            hTObj.rect.top = 270 + (num-16)*30
+            hTObj.rect.left = 360
+
+    hTObj.blitSelf()
+    dTlist.append(hTObj)
+
+    return dTlist # return the discard tile list with new tile object hTObj
+
+def refreshTileImage(t1,t2,t3,t4):
+    for i in t1.hT: # display the player 1 hand tiles on screen
+        i.blitSelf()
+    for i in t2.hT: # display the player 2 hand tiles on screen
+        i.blitSelf()
+    for i in t3.hT: # display the player 3 hand tiles on screen
+        i.blitSelf()
+    for i in t4.hT: # display the player 4 hand tiles on screen
+        i.blitSelf()
+    for i in t1.dT: # display the player 1 discarded tiles on screen
+        i.blitSelf()
+    for i in t2.dT: # display the player 2 discarded tiles on screen
+        i.blitSelf()
+    for i in t3.dT: # display the player 3 discarded tiles on screen
+        i.blitSelf()
+    for i in t4.dT: # display the player 4 discarded tiles on screen
+        i.blitSelf()

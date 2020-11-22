@@ -46,18 +46,28 @@ class wnd2:
         tileRect.x = 100
         tileRect.y = 700
         print(tileRect)
-        tileStack111 = setting.tileStack(3)
-        pTile1 = setting.drawTile(tileStack111, 1)
-
+        listofPlayer = setting.drawTileAll()
+        tileRemain = listofPlayer[0]
+        player1 = listofPlayer[1]
+        player2 = listofPlayer[2]
+        player3 = listofPlayer[3]
+        player4 = listofPlayer[4]
+        player1.hT = setting.creatHtile(screen, player1.initTile, player1.sequence)
+        player2.hT = setting.creatHtile(screen, player2.initTile, player2.sequence)
+        player3.hT = setting.creatHtile(screen, player3.initTile, player3.sequence)
+        player4.hT = setting.creatHtile(screen, player4.initTile, player4.sequence)
+        print(player1)
+        print(player2)
+        print(player3)
+        print(player4)
         running = True
+
+        countOfClick = 0
         while running:
             screen.fill((244, 244, 255))
 
-            setting.showtile(screen,pTile1,1)
-            setting.showtile(screen,pTile1,2)
-            setting.showtile(screen,pTile1,3)
-            setting.showtile(screen,pTile1,4)
 
+            setting.refreshTileImage(player1,player2,player3,player4)
             square = buttons.square(screen)
             square.blitSelf()
             chi = buttons.chi(screen)
@@ -70,12 +80,25 @@ class wnd2:
             hu.blitSelf()
             guo = buttons.guo(screen)
             guo.blitSelf()
+            runindexList = [1,2,3,4]
+            runindex = 1
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(tileRect)
+                    if runindex == 1: # change to player sequence later
+                        print(player1.hT)
+                        print(len(player1.hT))
+                        for i in range(len(player1.hT)):
+                            if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status:
+                                player1.hT[i].rect.y -= 30
+                                player1.hT[i].blitSelf()
+                            elif player1.hT[i].rect.collidepoint(event.pos):
+                                player1.disTile(player1.hT[i],i)
+
+                                break
+
                     if tileRect.collidepoint(event.pos):
                         tileRect.y -= 30
 

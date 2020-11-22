@@ -9,6 +9,7 @@ class tile:
         self.image = pygame.image.load('pic/tile_type3_300ppi/3-b.png')
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
+        self.status = False
         if status: #the tile is selected
             tile.status = status
         else:
@@ -17,5 +18,6 @@ class tile:
         self.screen.blit(self.image, self.rect)
 
 
-
+    def __str__(self):
+        return f"Location: {self.screen_rect}, tile status:"
 
