@@ -97,8 +97,10 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj = tile(screen,pTile[i],False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/"+pTile[i]+".png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image,(60,75))
+            tileObj.rect = tileObj.image.get_rect()
             tileObj.rect.left = 180 + i * 60
             tileObj.rect.top = 640
+
             tileObj.blitSelf()
             tileObjList.append(tileObj)
 
@@ -109,7 +111,9 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
             tileObj.image = pygame.transform.rotate(tileObj.image,90)
-            tileObj.rect.bottom = 660 + i * 48
+            tileObj.rect = tileObj.image.get_rect()
+
+            tileObj.rect.bottom = 660 - i * 48
             tileObj.rect.left = 1060
             tileObj.blitSelf()
             tileObjList.append(tileObj)
@@ -121,6 +125,8 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
             tileObj.image = pygame.transform.rotate(tileObj.image,180)
+            tileObj.rect = tileObj.image.get_rect()
+
             tileObj.rect.top = 140 - 60
             tileObj.rect.left = 940 - 48 - i*48
             tileObj.blitSelf()
@@ -133,6 +139,7 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
             tileObj.image = pygame.transform.rotate(tileObj.image,270)
+            tileObj.rect = tileObj.image.get_rect()
             tileObj.rect.top = 80 + i * 48
             tileObj.rect.left = 80
             tileObj.blitSelf()
@@ -145,6 +152,7 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
     num = len(dTlist)
     hTObj.image = pygame.image.load("pic/tile_type3_300ppi/" + hTObj.name + ".png")
     hTObj.image = pygame.transform.smoothscale(hTObj.image, (30, 40))
+    hTObj.rect = hTObj.image.get_rect()
     if playerNo == 1:
         if num < 8:
             hTObj.rect.top = 510

@@ -19,5 +19,5 @@ class tile:
 
 
     def __str__(self):
-        return f"Location: {self.screen_rect}, tile status:"
+        return f"Location: {self.rect.x}{self.rect.y}, tile status: {self.status}"
 

@@ -35,6 +35,7 @@ class wnd1:
 
 class wnd2:
     def __init__(self,screen):
+        global player4, player3, player2, player1
         self.screen = screen
         pygame.display.set_caption("麻将")
         screen = pygame.display.set_mode((1200,800))
@@ -48,20 +49,28 @@ class wnd2:
         print(tileRect)
         listofPlayer = setting.drawTileAll()
         tileRemain = listofPlayer[0]
-        player1 = listofPlayer[1]
-        player2 = listofPlayer[2]
-        player3 = listofPlayer[3]
-        player4 = listofPlayer[4]
+        for i in listofPlayer[1:5]: # assign player with corresponding sequence
+            if i.sequence == 1:
+                player1 = i
+            elif i.sequence == 2:
+                player2 = i
+            elif i.sequence == 3:
+                player3 = i
+            elif i.sequence == 4:
+                player4 = i
+
         player1.hT = setting.creatHtile(screen, player1.initTile, player1.sequence)
         player2.hT = setting.creatHtile(screen, player2.initTile, player2.sequence)
         player3.hT = setting.creatHtile(screen, player3.initTile, player3.sequence)
         player4.hT = setting.creatHtile(screen, player4.initTile, player4.sequence)
+
         print(player1)
         print(player2)
         print(player3)
         print(player4)
         running = True
-
+        runindexList = [1, 2, 3, 4]
+        runindex = 1
         countOfClick = 0
         while running:
             screen.fill((244, 244, 255))
@@ -80,23 +89,23 @@ class wnd2:
             hu.blitSelf()
             guo = buttons.guo(screen)
             guo.blitSelf()
-            runindexList = [1,2,3,4]
-            runindex = 1
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if runindex == 1: # change to player sequence later
-                        print(player1.hT)
-                        print(len(player1.hT))
+                        # print(player1.hT)
                         for i in range(len(player1.hT)):
-                            if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status:
-                                player1.hT[i].rect.y -= 30
+                            if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False:
+                                player1.hT[i].rect.top -= 30
                                 player1.hT[i].blitSelf()
-                            elif player1.hT[i].rect.collidepoint(event.pos):
+                                player1.hT[i].status = True
+                                break
+                            elif player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status:
                                 player1.disTile(player1.hT[i],i)
-
+                                print(len(player1.hT))
+                                setting.refreshTileImage(player1, player2, player3, player4)
                                 break
 
                     if tileRect.collidepoint(event.pos):
