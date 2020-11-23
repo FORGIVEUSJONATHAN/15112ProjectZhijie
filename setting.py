@@ -38,7 +38,7 @@ def tileStack(type):
 
 # print(tileStack(3))
 
-def tileSorting(tilelist): #sorttile
+def tileSorting1(tilelist): #sort tiles for tile list as string
     for i in range(len(tilelist)):
         index = i
         min = int(tilelist[i][2:])
@@ -48,9 +48,14 @@ def tileSorting(tilelist): #sorttile
                 min = num
                 index = j
         tilelist[i],tilelist[index] = tilelist[index],tilelist[i]
-    return tilelist
 
+    return tilelist
 # print(tileSorting(['3-1', '3-12', '3-13', '3-14', '3-18', '3-2', '3-22', '3-23', '3-23', '3-29', '3-3', '3-30', '3-5', '3-8']))
+
+
+
+
+
 
 def drawTile(tileStack,sequence):
     pTile = []
@@ -63,7 +68,7 @@ def drawTile(tileStack,sequence):
             pTile.append(tileStack[0])
             print(pTile)# add the first element into list
             tileStack.pop(0) #remove the first element of the list
-    pTile = tileSorting(pTile)
+    pTile = tileSorting1(pTile)
     return pTile
 
 # tileStack111 = tileStack(3)
@@ -85,6 +90,7 @@ def drawTileAll():
     player2 = player("BB","AI",sequenceList[1],pTile2,[],[],[])
     player3 = player("CC","AI",sequenceList[2],pTile3,[],[],[])
     player4 = player("DD","AI",sequenceList[3],pTile4,[],[],[])
+    print(f"tile stack is {tileStackAll}")
     return tileStackAll, player1, player2, player3, player4
     # return the player objects and the remaining tileStack
 
@@ -155,52 +161,53 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
     hTObj.rect = hTObj.image.get_rect()
     if playerNo == 1:
         if num < 8:
-            hTObj.rect.top = 510
+            hTObj.rect.top = 510+10
             hTObj.rect.left = 480+num*30
         elif num < 16:
-            hTObj.rect.top = 510+40
+            hTObj.rect.top = 510+40+10
             hTObj.rect.left = 480+(num-8)*30
         elif num < 24:
-            hTObj.rect.top = 510+80
+            hTObj.rect.top = 510+80+10
             hTObj.rect.left = 480+(num-16)*30
 
     elif playerNo == 2:
         hTObj.image = pygame.transform.rotate(hTObj.image,90)
 
         if num < 8:
-            hTObj.rect.top = 630 - num*30
+            hTObj.rect.top = 510-20 - num * 30
+            print(hTObj.rect.top)
             hTObj.rect.left = 720
         elif num < 16:
-            hTObj.rect.top = 630 - (num-8)*30
+            hTObj.rect.top = 510-20 - (num-8)*30
             hTObj.rect.left = 720 + 40
         elif num < 24:
-            hTObj.rect.top = 630 - (num-16)*30
+            hTObj.rect.top = 510-20 - (num-16)*30
             hTObj.rect.left = 720 + 80
 
     elif playerNo == 3:
         hTObj.image = pygame.transform.rotate(hTObj.image,180)
 
         if num < 8:
-            hTObj.rect.top = 230
+            hTObj.rect.top = 240
             hTObj.rect.left = 690 - num*30
         elif num < 16:
             hTObj.rect.top = 200
             hTObj.rect.left = 690 - (num-8)*30
         elif num < 24:
-            hTObj.rect.top = 170
+            hTObj.rect.top = 160
             hTObj.rect.left = 690 - (num-16)*30
 
     elif playerNo == 4:
         hTObj.image = pygame.transform.rotate(hTObj.image,270)
 
         if num < 8:
-            hTObj.rect.top = 270 + num*30
+            hTObj.rect.top = 270+10 + num*30
             hTObj.rect.left = 440
         elif num < 16:
-            hTObj.rect.top = 270 + (num-8)*30
+            hTObj.rect.top = 270+10 + (num-8)*30
             hTObj.rect.left = 400
         elif num < 24:
-            hTObj.rect.top = 270 + (num-16)*30
+            hTObj.rect.top = 270+10 + (num-16)*30
             hTObj.rect.left = 360
 
     hTObj.blitSelf()
@@ -225,3 +232,12 @@ def refreshTileImage(t1,t2,t3,t4):
         i.blitSelf()
     for i in t4.dT: # display the player 4 discarded tiles on screen
         i.blitSelf()
+
+def tNametoInt(tileNameList): # this is a function which convert the tile name to int value
+    for i in range(len(tileNameList)):
+        tileNameList[i] = int(tileNameList[i][2:])
+    return tileNameList
+
+# def checkwin(tileNameList):
+#     tileNameList = tNametoInt(tileNameList)
+#     for i in range (tileNameList):

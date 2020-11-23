@@ -40,14 +40,9 @@ class wnd2:
         pygame.display.set_caption("麻将")
         screen = pygame.display.set_mode((1200,800))
         screenRect = screen.get_rect()
-        tile = pygame.image.load("pic/tile_type3_300ppi/3-1.png")
-        tile = pygame.transform.smoothscale(tile,(80,110))
-        tileRect = tile.get_rect()
-        print(tileRect)
-        tileRect.x = 100
-        tileRect.y = 700
-        print(tileRect)
+
         listofPlayer = setting.drawTileAll()
+
         tileRemain = listofPlayer[0]
         for i in listofPlayer[1:5]: # assign player with corresponding sequence
             if i.sequence == 1:
@@ -70,8 +65,10 @@ class wnd2:
         print(player4)
         running = True
         runindexList = [1, 2, 3, 4]
-        runindex = 1
+        runindex = 4
         countOfClick = 0
+
+
         while running:
             screen.fill((244, 244, 255))
 
@@ -85,8 +82,8 @@ class wnd2:
             peng.blitSelf()
             gang = buttons.gang(screen)
             gang.blitSelf()
-            hu = buttons.hu(screen)
-            hu.blitSelf()
+            # hu = buttons.hu(screen)
+            # hu.blitSelf()
             guo = buttons.guo(screen)
             guo.blitSelf()
 
@@ -96,22 +93,39 @@ class wnd2:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if runindex == 1: # change to player sequence later
                         # print(player1.hT)
+                        if len(player1.hT)<14:
+                            player1.drawATile(screen, tileRemain)
                         for i in range(len(player1.hT)):
                             if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False:
                                 player1.hT[i].rect.top -= 30
                                 player1.hT[i].blitSelf()
                                 player1.hT[i].status = True
+                                for x in range(len(player1.hT)):
+                                    if player1.hT[x].status == True and x!=i:
+                                        player1.hT[x].rect.top += 30
+                                        player1.hT[x].blitSelf()
+                                        player1.hT[x].status = False
                                 break
                             elif player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status:
+                                print(len(player1.dT))
+                                setting.creatDtile(screen,player1.hT[i],player1.dT,1)
                                 player1.disTile(player1.hT[i],i)
+                                runindex = 2
                                 print(len(player1.hT))
-                                setting.refreshTileImage(player1, player2, player3, player4)
                                 break
+                    elif runindex == 2:
+                        player2.disTileRandom(screen)
+                        runindex = 3
 
-                    if tileRect.collidepoint(event.pos):
-                        tileRect.y -= 30
+                    elif runindex == 3:
+                        player3.disTileRandom(screen)
+                        runindex = 4
 
-            screen.blit(tile, tileRect)
+                    elif runindex == 4:
+                        player4.disTileRandom(screen)
+                        runindex = 1
+                        player1.drawATile(screen, tileRemain)
+
             pygame.display.update()
 
 wnd1()
