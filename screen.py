@@ -65,7 +65,7 @@ class wnd2:
         print(player4)
         running = True
         runindexList = [1, 2, 3, 4]
-        runindex = 4
+        runindex = 1
         countOfClick = 0
 
 
@@ -78,14 +78,18 @@ class wnd2:
             square.blitSelf()
             chi = buttons.chi(screen)
             chi.blitSelf()
-            peng = buttons.peng(screen)
-            peng.blitSelf()
+            # peng = buttons.peng(screen)
+            # peng.blitSelf()
             gang = buttons.gang(screen)
             gang.blitSelf()
             # hu = buttons.hu(screen)
             # hu.blitSelf()
             guo = buttons.guo(screen)
             guo.blitSelf()
+
+            if setting.checkwin(player1.get_hTNameList()):
+                hu = buttons.hu(screen)
+                hu.blitSelf()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -111,15 +115,19 @@ class wnd2:
                                 setting.creatDtile(screen,player1.hT[i],player1.dT,1)
                                 player1.disTile(player1.hT[i],i)
                                 runindex = 2
+                                player2.drawATile(screen, tileRemain)
+
                                 print(len(player1.hT))
                                 break
                     elif runindex == 2:
                         player2.disTileRandom(screen)
                         runindex = 3
+                        player3.drawATile(screen, tileRemain)
 
                     elif runindex == 3:
                         player3.disTileRandom(screen)
                         runindex = 4
+                        player4.drawATile(screen, tileRemain)
 
                     elif runindex == 4:
                         player4.disTileRandom(screen)

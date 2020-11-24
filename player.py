@@ -1,4 +1,5 @@
 import random
+import sys
 
 import pygame
 
@@ -22,18 +23,52 @@ class player:
         return f"PlayerSequence: {self.sequence} Player name: {self.name} Player hT: {self.hT} Player dT: {self.dT}"
 
     def drawATile(self,screen,tileStack): # draw a tile from the stack
-        print(tileStack[0])
-        if self.sequence == 1: #create the tile object for player 1
+        if tileStack == []:
+            sys.exit()
+        elif self.sequence == 1: #create the tile object for player 1
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tileStack[0] + ".png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75))
             tileObj.rect = tileObj.image.get_rect()
-            tileObj.rect.y = self.hT[0].rect.y
             tileObj.rect.x = self.hT[len(self.hT)-1].rect.x + 60
+            tileObj.rect.y = self.hT[0].rect.y
+            tileObj.blitSelf()
+            self.hT.append(tileObj)
+
+        elif self.sequence == 2:
+            tileObj = tile(screen,tileStack[0], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,90)
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.x = self.hT[0].rect.x
+            tileObj.rect.y = self.hT[len(self.hT)-1].rect.y - 48
+            tileObj.blitSelf()
+            self.hT.append(tileObj)
+
+        elif self.sequence == 3:
+            tileObj = tile(screen,tileStack[0], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,180)
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.x = self.hT[len(self.hT)-1].rect.x - 48
+            tileObj.rect.y = self.hT[0].rect.y
+            tileObj.blitSelf()
+            self.hT.append(tileObj)
+
+        elif self.sequence == 4:
+            tileObj = tile(screen,tileStack[0], False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,270)
+            tileObj.rect.x = self.hT[0].rect.x
+            tileObj.rect.y = self.hT[len(self.hT)-1].rect.y + 48
             tileObj.blitSelf()
             self.hT.append(tileObj)
         tileStack.pop(0)
         self.tileSorting2(screen)
+
         # if self.sequence == 1:
 
     def disTile(self,Atile,indexofTile): # A tile is the tile the player discard
@@ -57,7 +92,7 @@ class player:
             for i in self.hT[ranTileIndex:len(self.hT)]:
                 i.rect.top -= 48
                 i.blitSelf()
-
+        return self.dT[-1]
     def tileSorting2(self,screen): #sort tiles for tile list as objects
 
         for i in range(len(self.hT)):
@@ -82,3 +117,10 @@ class player:
         # tilenamelist = setting.tileSorting1(tilenamelist)
         # print(tilenamelist)
         # self.hT = setting.creatHtile(screen,tilenamelist,1)
+    def get_hTNameList(self):
+        hTNameList = []
+        for i in self.hT:
+            hTNameList.append(i.name)
+        return hTNameList
+
+    # def check_Peng(self,aTile):

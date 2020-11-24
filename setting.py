@@ -1,4 +1,6 @@
 import random
+
+import buttons
 from player import *
 import pygame
 
@@ -119,7 +121,7 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.image = pygame.transform.rotate(tileObj.image,90)
             tileObj.rect = tileObj.image.get_rect()
 
-            tileObj.rect.bottom = 660 - i * 48
+            tileObj.rect.bottom = 680 - i * 48
             tileObj.rect.left = 1060
             tileObj.blitSelf()
             tileObjList.append(tileObj)
@@ -238,6 +240,140 @@ def tNametoInt(tileNameList): # this is a function which convert the tile name t
         tileNameList[i] = int(tileNameList[i][2:])
     return tileNameList
 
-# def checkwin(tileNameList):
-#     tileNameList = tNametoInt(tileNameList)
-#     for i in range (tileNameList):
+def getDouble(numList):
+    double = []
+    listCopy = numList[:]
+    for i in numList:
+        if listCopy.count(i) == 2:
+            double.append(i)
+            while i in listCopy:
+                listCopy.remove(i) # tList1 No double
+    return double
+def getTriple(numList):
+    triple = []
+    listCopy = numList[:]
+    for i in numList:
+        if listCopy.count(i) == 3:
+            triple.append(i)
+            while i in listCopy:
+                listCopy.remove(i) # tList1 No double
+    return triple
+
+def getMulti(numList):
+    multi = []
+    listCopy = numList[:]
+    for i in numList:
+        if listCopy.count(i) >= 2:
+            multi.append(i)
+            while i in listCopy:
+                listCopy.remove(i) # tList1 No double
+    return multi
+
+def checkSequence(numList):
+    # check whether the list can be separate as sequences
+    # 223344, 233445, 234456,223344456
+    if len(numList) not in [3, 6, 9, 12]:
+        return False
+    while len(numList) in [3,6,9,12]:
+        # constraint for the length of number list
+        if numList[0]+1 in numList and numList[0]+2 in numList:
+            numList.remove(numList[0]+2)
+            numList.remove(numList[0]+1)
+            numList.remove(numList[0])
+        else:
+            return False
+    return True
+
+def checkwin(hTNameList):
+    # hu = buttons.hu(screen)
+    hTNameList = tNametoInt(hTNameList)
+    if len(hTNameList) == 3: # HU1 three tiles are the same
+        if hTNameList [0] == hTNameList [1] and hTNameList [1] == hTNameList [2]:
+            print("Hu")
+            # hu.blitSelf()
+            return True
+
+    # find all the pairs
+    double = getDouble(hTNameList) # tile appear 2 times fix the head of tile 固定麻将头
+    multiTile = getMulti(hTNameList) #tile appear 2,3,4 times
+
+
+    if len(double) == 7: # HU2 the player have 14 hand tiles which can form seven pairs
+        # hu.blitSelf()
+        return True
+
+    if len(double) == 1: # only 1 double
+        tList1 = hTNameList[:]
+        tList1.remove(double[0])
+        tList1.remove(double[0])
+        tList2 = hTNameList[:]
+        for i in tList1: # tList will only have tile can only have 1, 3, 4
+            if tList2.count(i) == 3: # 3 tiles are the same
+                while i in tList2:
+                    tList2.remove(i) # tList 2 No double and No Triple
+        countSeq = 0
+        if len(tList2) == [3,6,9,12] :
+            for i in range(2,len(tList2),3):
+                if tList2[i] not in [1,2,10,11,19,20,28,29,30,31,32,33,34]:# HU 3 AA BCD EFG HIJ
+                    if tList2[i] - 1 == tList2[i-1] and tList2[i] - 2 == tList2[i-2]: # check tiles are in sequence
+                        countSeq += 1
+            if countSeq == len(tList2)//3:
+                print("Hu")
+                # hu.blitSelf()
+                return True
+
+    elif len(multiTile) == 5 and len(double) == 1:
+        return True
+    elif len(multiTile) == 4 and len(double) == 1:
+        tList2 = hTNameList[:]
+        if len(tList2) == 11: #AA BBB CCC DDD EEE
+            return True
+        elif len(tList2) == 14:
+            for i in multiTile:
+                while i in tList2:
+                    tList2.remove(i)
+            if tList2[2] not in [1,2,10,11,19,20,28,29,30,31,32,33,34]: # AA BBB CCC DDD with sequence
+                if tList2[2]-1 == tList2[1] and tList2[2]-2 == tList2[0]:
+                    return True
+
+    if multiTile != []:
+        tList2 = hTNameList[:]
+        for i in multiTile:
+            tList2.remove(i)
+            tList2.remove(i) # remove a double from the list
+            if checkSequence(tList2): #去掉麻将头之后检查是否组成sequence
+                return True
+            elif len(getTriple(tList2))!=0: # 还存在三个麻将是一样的
+                tripleList = getTriple(tList2) # the length of triple list will only be maximum two, already checked 3 and 4
+                if len(tripleList) == 1:
+                    tList3 = tList2[:]
+                    for i in range(3):
+                        tList3.remove(tripleList[0]) # remove all the triples in the list
+                    if checkSequence(tList3):
+                        return True
+                elif len(tripleList) == 2:
+                    tList3 = tList2[:]
+                    for i in tripleList:
+                        for x in range(3):
+                            tList3.remove(i)
+                        if checkSequence(tList3): # check if remove one triple, whether the rest can form sequence
+                            return True
+                        else:
+                            tList3 = tList2
+
+                    for i in tripleList:
+                        for x in range(3):
+                            tList3.remove(i)
+                    if checkSequence(tList3): # check if remove both triple, whether the rest can form sequence
+                        return True
+
+            tList2 = hTNameList[:]
+    return False
+
+# assert (checkwin([1,1,2,3,4]) == True)
+# assert (checkwin([1,2,2,3,4])== False)
+# assert (checkwin([2,2,3,3,4,4,4,5,6,7,7])== True)
+# assert (checkwin([2,2,3,3,4,4,4,5,6,7])== False)
+# print(checkwin([2,2,3,3,4,4,4,5,6,7]))
+print(checkwin(['3-1', '3-6', '3-13', '3-14', '3-14', '3-15', '3-16', '3-17', '3-17', '3-22', '3-24', '3-27', '3-29', '3-31']))
+
