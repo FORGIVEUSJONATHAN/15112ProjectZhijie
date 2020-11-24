@@ -1,6 +1,6 @@
 import random
 import sys
-
+# from screen import *
 import pygame
 
 import setting
@@ -24,7 +24,7 @@ class player:
 
     def drawATile(self,screen,tileStack): # draw a tile from the stack
         if tileStack == []:
-            sys.exit()
+            return False
         elif self.sequence == 1: #create the tile object for player 1
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tileStack[0] + ".png")
@@ -93,6 +93,7 @@ class player:
                 i.rect.top -= 48
                 i.blitSelf()
         return self.dT[-1]
+
     def tileSorting2(self,screen): #sort tiles for tile list as objects
 
         for i in range(len(self.hT)):
@@ -124,3 +125,26 @@ class player:
         return hTNameList
 
     # def check_Peng(self,aTile):
+    def checkHuCong(self,cPlayer):
+        # a different type of win
+        hTNameList = self.get_hTNameList()
+        dTileName = cPlayer.dT[-1].name
+        hTNameList.append(dTileName)
+        hTNameList = setting.tileSorting1(hTNameList)
+        return setting.checkwin(hTNameList)
+
+    def checkPeng(self,cPlayer):
+        # if Peng can happen return True
+        # cPlayer == current player
+        hTNameList = self.get_hTNameList()
+        count = hTNameList.count(cPlayer.dT[-1].name)
+        if count == 2:
+            return True
+
+    def checkGang(self,cPlayer):
+        # if Gang can happen return True
+        # cPlayer == current player
+        hTNameList = self.get_hTNameList()
+        count = hTNameList.count(cPlayer.dT[-1].name)
+        if count == 3:
+            return True

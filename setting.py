@@ -234,6 +234,15 @@ def refreshTileImage(t1,t2,t3,t4):
         i.blitSelf()
     for i in t4.dT: # display the player 4 discarded tiles on screen
         i.blitSelf()
+    for i in t1.aT: # display the player 1 discarded tiles on screen
+        i.blitSelf()
+    for i in t2.aT: # display the player 2 discarded tiles on screen
+        i.blitSelf()
+    for i in t3.aT: # display the player 3 discarded tiles on screen
+        i.blitSelf()
+    for i in t4.aT: # display the player 4 discarded tiles on screen
+        i.blitSelf()
+
 
 def tNametoInt(tileNameList): # this is a function which convert the tile name to int value
     for i in range(len(tileNameList)):
@@ -272,14 +281,15 @@ def getMulti(numList):
 def checkSequence(numList):
     # check whether the list can be separate as sequences
     # 223344, 233445, 234456,223344456
-    if len(numList) not in [3, 6, 9, 12]:
+    numListCopy = numList[:]
+    if len(numListCopy) not in [3, 6, 9, 12]:
         return False
-    while len(numList) in [3,6,9,12]:
+    while len(numListCopy) in [3,6,9,12]:
         # constraint for the length of number list
-        if numList[0]+1 in numList and numList[0]+2 in numList:
-            numList.remove(numList[0]+2)
-            numList.remove(numList[0]+1)
-            numList.remove(numList[0])
+        if numListCopy[0]+1 in numListCopy and numListCopy[0]+2 in numListCopy:
+            numListCopy.remove(numListCopy[0]+2)
+            numListCopy.remove(numListCopy[0]+1)
+            numListCopy.remove(numListCopy[0])
         else:
             return False
     return True
@@ -359,7 +369,7 @@ def checkwin(hTNameList):
                         if checkSequence(tList3): # check if remove one triple, whether the rest can form sequence
                             return True
                         else:
-                            tList3 = tList2
+                            tList3 = tList2[:]
 
                     for i in tripleList:
                         for x in range(3):
@@ -375,5 +385,32 @@ def checkwin(hTNameList):
 # assert (checkwin([2,2,3,3,4,4,4,5,6,7,7])== True)
 # assert (checkwin([2,2,3,3,4,4,4,5,6,7])== False)
 # print(checkwin([2,2,3,3,4,4,4,5,6,7]))
-print(checkwin(['3-1', '3-6', '3-13', '3-14', '3-14', '3-15', '3-16', '3-17', '3-17', '3-22', '3-24', '3-27', '3-29', '3-31']))
+# print(checkwin(['3-1', '3-6', '3-13', '3-14', '3-14', '3-15', '3-16', '3-17', '3-17', '3-22', '3-24', '3-27', '3-29', '3-31']))
+print(checkwin(['3-1', '3-2', '3-3', '3-19', '3-20', '3-21', '3-24', '3-25', '3-26', '3-28', '3-28', '3-28', '3-31', '3-31']))
 
+# def convertdTtohT(dTile,playerSequence): #A dTile, player sequence of hT
+#     if playerSequence == 1:
+
+def pengAction(screen,playerA,playerB):
+    #action happened after the user clicked peng button 碰
+    #player A will execute peng
+    dTname = playerB.dT[-1].name
+    if playerA.sequence == 1:
+        for i in range(3):
+            tileObj = tile(screen,dTname, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + dTname + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75))
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.left = 180 + len(playerA.aT) * 60
+            tileObj.rect.top = 720
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+        count = 0
+        for i in playerA.hT:
+            if i.name == dTname:
+                playerA.hT.remove(i)
+                count += 1
+            if count == 2:
+                break
+        playerB.dT.remove(playerB.dT[-1])
+        playerA.tileSorting2(screen)
