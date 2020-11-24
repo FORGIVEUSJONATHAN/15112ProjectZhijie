@@ -113,11 +113,11 @@ class wnd2:
                     if hu.rect.collidepoint(event.pos):
                         wnd3Win(screen)
                     if peng.rect.collidepoint(event.pos):
-                        if runindex == 2:
+                        if runindex == 1:
 
-                            setting.pengAction(screen,player1,player2)
+                            setting.pengAction(screen,player1,player4)
                         elif runindex == 3:
-                            setting.pengAction(screen, player1, player3)
+                            setting.pengAction(screen, player1, player2)
                         elif runindex == 4:
                             setting.pengAction(screen, player1, player3)
 

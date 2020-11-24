@@ -405,12 +405,15 @@ def pengAction(screen,playerA,playerB):
             tileObj.rect.top = 720
             tileObj.blitSelf()
             playerA.aT.append(tileObj)
-        count = 0
-        for i in playerA.hT:
-            if i.name == dTname:
-                playerA.hT.remove(i)
-                count += 1
-            if count == 2:
-                break
+        indexlist = []
+        for i in range(len(playerA.hT)):
+            if playerA.hT[i].name == dTname:
+                indexlist.append(i)
+        playerA.hT.pop(indexlist[0])
+        for x in playerA.hT[indexlist[0]:len(playerA.hT)]:  # reset the rect of the tiles
+            x.rect.x -= 60
+        playerA.hT.pop(indexlist[1])
+        for x in playerA.hT[indexlist[1]:len(playerA.hT)]:  # reset the rect of the tiles
+            x.rect.x -= 60
         playerB.dT.remove(playerB.dT[-1])
         playerA.tileSorting2(screen)
