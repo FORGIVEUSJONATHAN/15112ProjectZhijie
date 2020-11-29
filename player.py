@@ -147,4 +147,7 @@ class player:
         hTNameList = self.get_hTNameList()
         count = hTNameList.count(cPlayer.dT[-1].name)
         if count == 3:
-            return True
+            return 1
+        elif setting.getQura(setting.tNametoInt(self.get_hTNameList())) !=[]:
+            return 2
+

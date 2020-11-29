@@ -249,6 +249,7 @@ def tNametoInt(tileNameList): # this is a function which convert the tile name t
         tileNameList[i] = int(tileNameList[i][2:])
     return tileNameList
 
+
 def getDouble(numList):
     double = []
     listCopy = numList[:]
@@ -258,6 +259,8 @@ def getDouble(numList):
             while i in listCopy:
                 listCopy.remove(i) # tList1 No double
     return double
+
+
 def getTriple(numList):
     triple = []
     listCopy = numList[:]
@@ -265,8 +268,20 @@ def getTriple(numList):
         if listCopy.count(i) == 3:
             triple.append(i)
             while i in listCopy:
-                listCopy.remove(i) # tList1 No double
+                listCopy.remove(i) # tList1 No triple
     return triple
+
+
+def getQura(numList):
+    qura = []
+    listCopy = numList[:]
+    for i in numList:
+        if listCopy.count(i) == 4:
+            qura.append(i)
+            while i in listCopy:
+                listCopy.remove(i) # tList1 No Qura
+    return qura
+# print(getQura([1,2,1,1,3,2,1])) # testing for getQura
 
 def getMulti(numList):
     multi = []
@@ -409,11 +424,58 @@ def pengAction(screen,playerA,playerB):
         for i in range(len(playerA.hT)):
             if playerA.hT[i].name == dTname:
                 indexlist.append(i)
-        playerA.hT.pop(indexlist[0])
-        for x in playerA.hT[indexlist[0]:len(playerA.hT)]:  # reset the rect of the tiles
-            x.rect.x -= 60
-        playerA.hT.pop(indexlist[1])
-        for x in playerA.hT[indexlist[1]:len(playerA.hT)]:  # reset the rect of the tiles
-            x.rect.x -= 60
+        for i in range(2):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.x -= 60
         playerB.dT.remove(playerB.dT[-1])
         playerA.tileSorting2(screen)
+
+
+def gangAction1(screen,playerA,playerB):
+    dTname = playerB.dT[-1].name
+    if playerA.sequence == 1:
+        for i in range(4):
+            tileObj = tile(screen,dTname, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + dTname + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75))
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.left = 180 + len(playerA.aT) * 60
+            tileObj.rect.top = 720
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+        indexlist = []
+        for i in range(len(playerA.hT)):
+            if playerA.hT[i].name == dTname:
+                indexlist.append(i)
+        for i in range(3):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.x -= 60
+        playerB.dT.remove(playerB.dT[-1])
+        playerA.tileSorting2(screen)
+
+def gangAction2(screen,playerA):
+    hTNameList = playerA.get_hTNameList()
+    hTNameList = tNametoInt(hTNameList)
+    tName = f"3-{str(getQura(hTNameList))}"
+    if playerA.sequence == 1:
+        for i in range(4):
+            tileObj = tile(screen,tName, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tName + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75))
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.left = 180 + len(playerA.aT) * 60
+            tileObj.rect.top = 720
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+        indexlist = []
+        for i in range(len(playerA.hT)):
+            if playerA.hT[i].name == tName:
+                indexlist.append(i)
+        for i in range(4):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.x -= 60
+        playerA.tileSorting2(screen)
+

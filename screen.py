@@ -67,8 +67,11 @@ class wnd2:
         runindexList = [1, 2, 3, 4]
         runindex = 1
         count = 0
+        checkPeng = False # indicator of Peng
+        checkGang = 3 # indicator of Gang
         hu = buttons.hu(screen)
         peng = buttons.peng(screen)
+        gang = buttons.gang(screen)
 
         while running:
             screen.fill((244, 244, 255))
@@ -95,15 +98,40 @@ class wnd2:
                 if player1.checkPeng(player4):
                     print("能碰")
                     peng.blitSelf()
+                    checkPeng = True
             elif runindex == 3 and player2.dT != []:
                 if player1.checkPeng(player2):
                     print("能碰")
                     peng.blitSelf()
+                    checkPeng = True
+
             elif runindex == 4 and player3.dT != []:
                 if player1.checkPeng(player3):
                     print("能碰")
                     peng.blitSelf()
+                    checkPeng = True
 
+            else:
+                checkPeng = False
+
+            if runindex == 1 and player4.dT != []:  # check the peng option
+                if player1.checkGang(player4) in [1,2]:
+                    print("能gang")
+                    gang.blitSelf()
+                    checkGang = player1.checkGang(player4)
+            elif runindex == 3 and player2.dT != []:
+                if player1.checkGang(player2) in [1,2] :
+                    print("能gang")
+                    gang.blitSelf()
+                    checkGang = player1.checkGang(player2)
+
+            elif runindex == 4 and player3.dT != []:
+                if player1.checkGang(player3) in [1,2]:
+                    print("能gang")
+                    gang.blitSelf()
+                    checkGang = player1.checkGang(player3)
+            else:
+                checkGang = 3
 
 
             for event in pygame.event.get():
@@ -112,19 +140,42 @@ class wnd2:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if hu.rect.collidepoint(event.pos):
                         wnd3Win(screen)
-                    if peng.rect.collidepoint(event.pos):
+                    if peng.rect.collidepoint(event.pos) and checkPeng == True: # 解决按空白处的问题
                         if runindex == 1:
-
                             setting.pengAction(screen,player1,player4)
+                            runindex = 1
+                            checkPeng = False
                         elif runindex == 3:
                             setting.pengAction(screen, player1, player2)
+                            runindex = 1
+                            checkPeng = False
                         elif runindex == 4:
                             setting.pengAction(screen, player1, player3)
+                            runindex = 1
+                            checkPeng = False
+
+                    elif gang.rect.collidepoint(event.pos):
+                        if checkGang == 1:
+                            if runindex == 1:
+                                setting.gangAction1(screen, player1, player4)
+                                runindex = 1
+                                checkGang = False
+                            elif runindex == 3:
+                                setting.gangAction1(screen, player1, player2)
+                                runindex = 1
+                                checkGang = False
+                            elif runindex == 4:
+                                setting.gangAction1(screen, player1, player3)
+                                runindex = 1
+                                checkGang = False
+                        elif checkGang == 2:
+                                setting.gangAction2(screen,player1)
+
 
                     elif runindex == 1: # change to player sequence later
                         # print(player1.hT)
-                        if len(player1.hT)<14:
-                            player1.drawATile(screen, tileRemain)
+                        # if len(player1.hT)<14:
+                        #     player1.drawATile(screen, tileRemain)
                         for i in range(len(player1.hT)):
                             if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False: # selected a tile
                                 player1.hT[i].rect.top -= 30
@@ -142,7 +193,7 @@ class wnd2:
                                 player1.disTile(player1.hT[i],i)
                                 count = count + 1 # count the number of discarded tile
                                 runindex = 2
-                                if player2.drawATile(screen, tileRemain) == False: # check for a tied game
+                                if player2.drawATile(screen,tileRemain) == False: # check for a tied game
                                     wnd4Tied(screen)
                                 print(len(player1.hT))
                                 break
@@ -184,14 +235,31 @@ class wnd3Win:
         winRect = win.get_rect()
         winRect.centerx = screen.get_rect().centerx
         winRect.centery = screen.get_rect().centery
+        restart = pygame.image.load("pic/restart.png")
+        restartRect = restart.get_rect()
+        restartRect.left = screen.get_rect().left
+        restartRect.top = screen.get_rect().bottom - 115
+        quit = pygame.image.load("pic/quit.png")
+        quitRect = quit.get_rect()
+        quitRect.right = screen.get_rect().right
+        quitRect.top = restartRect.top
+
         running = True
         while running:
             screen.fill((146, 168, 209))
             screen.blit(win,winRect)
+            screen.blit(restart,restartRect)
+            screen.blit(quit,quitRect)
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if restartRect.collidepoint(event.pos):
+                        wnd2(screen)
+                    elif quitRect.collidepoint(event.pos):
+                        sys.exit()
             pygame.display.update()
+
 
 class wnd4Tied:
     def __init__(self,screen):
@@ -200,13 +268,29 @@ class wnd4Tied:
         tiedRect = tied.get_rect()
         tiedRect.centerx = screen.get_rect().centerx
         tiedRect.centery = screen.get_rect().centery
+        restart = pygame.image.load("pic/restart.png")
+        restartRect = restart.get_rect()
+        restartRect.left = screen.get_rect().left
+        restartRect.top = screen.get_rect().bottom - 115
+        quit = pygame.image.load("pic/quit.png")
+        quitRect = quit.get_rect()
+        quitRect.right = screen.get_rect().right
+        quitRect.top = restartRect.top
+
         running = True
         while running:
             screen.fill((146, 168, 209))
             screen.blit(tied,tiedRect)
+            screen.blit(restart,restartRect)
+            screen.blit(quit,quitRect)
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.QUIT:
+                if event.type == pygame.QUIT:
                     sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if restartRect.collidepoint(event.pos):
+                        wnd2(screen)
+                    elif quitRect.collidepoint(event.pos):
+                        sys.exit()
             pygame.display.update()
 
 
