@@ -4,6 +4,7 @@ import buttons
 from player import *
 import pygame
 
+from playerAI import playerAI
 from tile import tile
 def tileStack(type):
     # create a stack a tiles and shuffle them
@@ -88,10 +89,10 @@ def drawTileAll():
     pTile2 = drawTile(tileStackAll,sequenceList[1])
     pTile3 = drawTile(tileStackAll,sequenceList[2])
     pTile4 = drawTile(tileStackAll,sequenceList[3])
-    player1 = player("AA","HUMAN",sequenceList[0],pTile1,[],[],[])
-    player2 = player("BB","AI",sequenceList[1],pTile2,[],[],[])
-    player3 = player("CC","AI",sequenceList[2],pTile3,[],[],[])
-    player4 = player("DD","AI",sequenceList[3],pTile4,[],[],[])
+    player1 = playerAI("AA","HUMAN",sequenceList[0],pTile1,[],[],[])
+    player2 = playerAI("BB","AI",sequenceList[1],pTile2,[],[],[])
+    player3 = playerAI("CC","AI",sequenceList[2],pTile3,[],[],[])
+    player4 = playerAI("DD","AI",sequenceList[3],pTile4,[],[],[])
     print(f"tile stack is {tileStackAll}")
     return tileStackAll, player1, player2, player3, player4
     # return the player objects and the remaining tileStack

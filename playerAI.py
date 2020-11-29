@@ -37,11 +37,11 @@ class playerAI(player):
 
     def disTileName(self,dT): # return the number of the tile which needs to be discarded
         hTNameList = self.get_hTNameList()
-        hTNameList = tNametoInt(hTNameList)
-        doubleList = getDouble(hTNameList)
-        tripleList = getTriple(hTNameList)
-        mutiList = getMulti(hTNameList)
-        dTNameList = tNametoInt(dT)
+        hTNameList = setting.tNametoInt(hTNameList)
+        doubleList = setting.getDouble(hTNameList)
+        tripleList = setting.getTriple(hTNameList)
+        mutiList = setting.getMulti(hTNameList)
+        dTNameList = setting.tNametoInt(dT)
         if len(mutiList) >= 4 and len(hTNameList) >= 12:
             # if the num of hand tile is smaller than 12, it is not possible to have combination of AABBCCDDEEFFGG
             tListNoMulti = []
@@ -69,20 +69,20 @@ class playerAI(player):
                                 tListNMNANG.append(i)
                 if tListNMNS != []:
                     for i in tListNMNS:
-                        if i not in dTNameList:
-                            return i
+                        if i in dTNameList:
+                            return f"3-{i}"
                     return f"3-{random.choice(tListNMNS)}"
                 else: # tListNMNS == []
                     if tListNMNANG !=[]:
                         for i in tListNMNANG:
-                            if i not in dTNameList:
-                                return i
+                            if i in dTNameList:
+                                return f"3-{i}"
                         return f"3-{random.choice(tListNMNANG)}"
                     else: # tListNMNANG ==[]
                         if tListNMNA != []:
                             for i in tListNMNA:
-                                if i not in dTNameList:
-                                    return i
+                                if i in dTNameList:
+                                    return f"3-{i}"
                             return f"3-{random.choice(tListNMNA)}"
                         else:
                             return f"3-{random.choice(tListNoMulti)}"
@@ -95,25 +95,59 @@ class playerAI(player):
             if tListNoMulti != []:
                 tListNMNS3 = tListNoMulti[:] # tiles do not have duplicates and tiles does not form a sequence of 3
                 i = 0
-                while checkSequence(tListNMNS3):
+                while setting.checkSequence(tListNMNS3):
                     if tListNMNS3[i]+1 in tListNMNS3 and tListNMNS3[i]+2 in tListNMNS3:
                         tListNMNS3.remove(tListNMNS3[i])
                         tListNMNS3.remove(tListNMNS3[i]+1)
                         tListNMNS3.remove(tListNMNS3[i]+2)
-                if len(tListNMNS3) != 0:
+                if len(tListNMNS3) != 0: # 有牌既不是3个连续，也没有重复的牌
+                    for i in tListNMNS3:
+                        if i in dTNameList:
+                            return f"3-{i}"
                     return f"3-{random.choice(tListNMNS3)}"
-                # else:
-
-            # else: # all numbers are duplicates
-            #     if len(doubleList) == 0:
-            #
-            #     elif len(doubleList)>2:
-            #         return f"3-{random.choice(doubleList)}"
-
-
-
-
-
-
-
-
+                else: # len(tListNMNS3) == 0
+                    if len(doubleList)>=2:
+                        for i in doubleList:
+                            if i in dTNameList:
+                                return f"3-{i}"
+                        return f"3-{random.choice(doubleList)}"
+                    else:
+                        for i in tListNoMulti:
+                            if i in dTNameList:
+                                return f"3-{i}"
+                        return f"3-{random.choice(tListNoMulti)}"
+            else: #tListNoMulti == []
+                if len(doubleList)>=2:
+                    for i in doubleList:
+                        if i in dTNameList:
+                            return f"3-{i}"
+                    return f"3-{random.choice(doubleList)}"
+                else:
+                    if tripleList!=[]:
+                        for i in tripleList:
+                            if i in dTNameList:
+                                return f"3-{i}"
+                        return f"3-{random.choice(tripleList)}"
+                    else:
+                        return f"3-{random.choice(doubleList)}"
+    def disTileAct(self,screen,dTName):
+        tileIndex = 0
+        for i in range(len(self.hT)):
+            if dTName == self.hT[i].name:
+                tileIndex = i
+                break
+        setting.creatDtile(screen, self.hT[tileIndex], self.dT, self.sequence)
+        self.hT.pop(tileIndex)
+        if self.sequence == 2:
+            for i in self.hT[tileIndex:len(self.hT)]:
+                i.rect.top += 48
+                i.blitSelf()
+        elif self.sequence == 3:
+            for i in self.hT[tileIndex:len(self.hT)]:
+                i.rect.left += 48
+                i.blitSelf()
+        elif self.sequence == 4:
+            for i in self.hT[tileIndex:len(self.hT)]:
+                i.rect.top -= 48
+                i.blitSelf()
+        return self.dT[-1]

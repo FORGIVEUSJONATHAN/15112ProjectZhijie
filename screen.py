@@ -72,7 +72,7 @@ class wnd2:
         hu = buttons.hu(screen)
         peng = buttons.peng(screen)
         gang = buttons.gang(screen)
-
+        dTListAll = []
         while running:
             screen.fill((244, 244, 255))
 
@@ -91,6 +91,7 @@ class wnd2:
             # guo.blitSelf()
             # if count == 4:
             #     hu.blitSelf()
+            dTListAll = setting.getdTAll(player1,player2,player3,player4)
             if runindex == 1 and setting.checkwin(player1.get_hTNameList()):
                 hu.blitSelf()
 
@@ -198,8 +199,9 @@ class wnd2:
                                 print(len(player1.hT))
                                 break
                     elif runindex == 2:
-
-                        player2.disTileRandom(screen) # player 2 discard a card
+                        dTname = player2.disTileName(dTListAll)
+                        player2.disTileAct(screen,dTname)
+                        # player2.disTileRandom(screen) # player 2 discard a card
                         if player1.checkHuCong(player2):
                             hu.blitSelf()
 
@@ -209,7 +211,9 @@ class wnd2:
                             wnd4Tied(screen)
 
                     elif runindex == 3:
-                        player3.disTileRandom(screen) # player 3 discard a card
+                        dTname = player3.disTileName(dTListAll)
+                        player3.disTileAct(screen, dTname)
+                        # player3.disTileRandom(screen) # player 3 discard a card
                         if player1.checkHuCong(player3):
                             hu.blitSelf()
 
@@ -218,7 +222,10 @@ class wnd2:
                             wnd4Tied(screen)
 
                     elif runindex == 4:
-                        player4.disTileRandom(screen) # player 4 discard a card
+                        dTname = player4.disTileName(dTListAll)
+                        player4.disTileAct(screen, dTname)
+
+                        # player4.disTileRandom(screen) # player 4 discard a card
                         if player1.checkHuCong(player4):
                             hu.blitSelf()
 
