@@ -124,7 +124,12 @@ class player:
             hTNameList.append(i.name)
         return hTNameList
 
-    # def check_Peng(self,aTile):
+    def get_dTNameList(self):
+        dTNameList = []
+        for i in self.dT:
+            dTNameList.append(i.name)
+        return dTNameList
+
     def checkHuCong(self,cPlayer):
         # a different type of win
         hTNameList = self.get_hTNameList()

@@ -479,3 +479,7 @@ def gangAction2(screen,playerA):
                 x.rect.x -= 60
         playerA.tileSorting2(screen)
 
+def getdTAll(playerA,playerB,playerC,playerD):
+    dTAll = []
+    dTAll = playerA.get_dTNameList() + playerB.get_dTNameList()+ playerC.get_dTNameList()+ playerD.get_dTNameList()
+    return dTAll # ass "3-11","3-12"
