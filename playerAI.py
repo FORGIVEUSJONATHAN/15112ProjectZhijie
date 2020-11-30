@@ -150,4 +150,6 @@ class playerAI(player):
             for i in self.hT[tileIndex:len(self.hT)]:
                 i.rect.top -= 48
                 i.blitSelf()
+        print(f"player{self.sequence} has {len(self.hT)} tiles")
+
         return self.dT[-1]

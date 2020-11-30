@@ -25,6 +25,8 @@ class player:
     def drawATile(self,screen,tileStack): # draw a tile from the stack
         if tileStack == []:
             return False
+        elif len(self.hT)+1 not in [1,2,5,8,11,12,14]:
+            print( f"player{self.sequence}cannot draw, it has {len(self.hT)} tiles")
         elif self.sequence == 1: #create the tile object for player 1
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tileStack[0] + ".png")
@@ -68,13 +70,14 @@ class player:
             self.hT.append(tileObj)
         tileStack.pop(0)
         self.tileSorting2(screen)
-
+        print("摸牌了")
         # if self.sequence == 1:
 
     def disTile(self,Atile,indexofTile): # A tile is the tile the player discard
         self.hT.pop(indexofTile)
         for i in self.hT[indexofTile:len(self.hT)]: # reset the rect of the tiles
             i.rect.x -= 60
+        print(f"player{self.sequence} has {len(self.hT)} tiles")
 
     def disTileRandom(self,screen): # this is a function for Random AI
         ranTileIndex = random.randint(0,len(self.hT)-1)
