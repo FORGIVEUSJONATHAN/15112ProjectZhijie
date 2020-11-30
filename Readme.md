@@ -4,8 +4,7 @@
 
 ### 万
 
-
-<img src="pic/tile_type3_300ppi/3-1.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-2.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-3.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-4.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-5.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-6.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-7.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-8.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-9.png" alt="avatar" style="zoom:10%;" />
+<img src="pic/tile_type3_300ppi/3-1.png" alt="avatar" width="120" height="165" /><img src="pic/tile_type3_300ppi/3-2.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-3.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-4.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-5.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-6.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-7.png" alt="avatar" style="zoom:10%;" /><img src="pic/tile_type3_300ppi/3-8.png" alt="avatar" style="zoom:10%;"  /><img src="pic/tile_type3_300ppi/3-9.png" alt="avatar" style="zoom:10%;" />
 
 
 ### 筒
