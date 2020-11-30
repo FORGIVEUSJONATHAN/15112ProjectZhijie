@@ -14,6 +14,8 @@ class wnd1:
         startRect = start.get_rect()
         startRect.centerx = screen.get_rect().centerx
         startRect.centery = screen.get_rect().centery
+        startRect.y = startRect.y+300
+
         running = True
         while running:
             screen.fill((146, 168, 209))

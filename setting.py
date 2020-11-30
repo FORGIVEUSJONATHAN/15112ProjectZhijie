@@ -1,5 +1,4 @@
 import random
-
 import buttons
 from player import *
 import pygame
