@@ -67,8 +67,7 @@ def drawTile(tileStack,sequence):
             tileStack.pop(0) #remove the first element of the list
     else:
         for i in range(13):
-            pTile.append(tileStack[0])
-            print(pTile)# add the first element into list
+            pTile.append(tileStack[0]) # add the first element into list
             tileStack.pop(0) #remove the first element of the list
     pTile = tileSorting1(pTile)
     return pTile
@@ -81,9 +80,7 @@ def drawTile(tileStack,sequence):
 def drawTileAll():
     tileStackAll = tileStack(3)
     sequenceList = [1,2,3,4]
-    random.shuffle(sequenceList)
-    print(sequenceList)
-    ## a random list to determine the sequence
+    random.shuffle(sequenceList)    ## a random list to determine the sequence
     pTile1 = drawTile(tileStackAll,sequenceList[0])
     pTile2 = drawTile(tileStackAll,sequenceList[1])
     pTile3 = drawTile(tileStackAll,sequenceList[2])
@@ -92,7 +89,7 @@ def drawTileAll():
     player2 = playerAI("BB","AI",sequenceList[1],pTile2,[],[],[])
     player3 = playerAI("CC","AI",sequenceList[2],pTile3,[],[],[])
     player4 = playerAI("DD","AI",sequenceList[3],pTile4,[],[],[])
-    print(f"tile stack is {tileStackAll}")
+    # print(f"tile stack is {tileStackAll}")
     return tileStackAll, player1, player2, player3, player4
     # return the player objects and the remaining tileStack
 
@@ -177,7 +174,6 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
 
         if num < 8:
             hTObj.rect.top = 510-20 - num * 30
-            print(hTObj.rect.top)
             hTObj.rect.left = 720
         elif num < 16:
             hTObj.rect.top = 510-20 - (num-8)*30
@@ -245,7 +241,9 @@ def refreshTileImage(t1,t2,t3,t4):
 
 
 def tNametoInt(tileNameList): # this is a function which convert the tile name to int value
-    if type(tileNameList[0]) == "int":
+    if tileNameList == []:
+        return tileNameList
+    elif type(tileNameList[0]) == "int":
         return tileNameList
     else:
         for i in range(len(tileNameList)):
@@ -285,6 +283,7 @@ def getQura(numList):
                 listCopy.remove(i) # tList1 No Qura
     return qura
 # print(getQura([1,2,1,1,3,2,1])) # testing for getQura
+# print(getQura([1,2,12,13,3,1,2,1,2,2]))
 
 def getMulti(numList):
     multi = []
@@ -315,8 +314,8 @@ def checkSequence(numList):
 def checkwin(hTNameList):
     # hu = buttons.hu(screen)
     hTNameList = tNametoInt(hTNameList)
-    if len(hTNameList) == 3: # HU1 three tiles are the same
-        if hTNameList [0] == hTNameList [1] and hTNameList [1] == hTNameList [2]:
+    if len(hTNameList) == 2: # HU1 three tiles are the same
+        if hTNameList [0] == hTNameList [1]:
             print("Hu")
             # hu.blitSelf()
             return True
@@ -404,7 +403,7 @@ def checkwin(hTNameList):
 # assert (checkwin([2,2,3,3,4,4,4,5,6,7])== False)
 # print(checkwin([2,2,3,3,4,4,4,5,6,7]))
 # print(checkwin(['3-1', '3-6', '3-13', '3-14', '3-14', '3-15', '3-16', '3-17', '3-17', '3-22', '3-24', '3-27', '3-29', '3-31']))
-print(checkwin(['3-1', '3-2', '3-3', '3-19', '3-20', '3-21', '3-24', '3-25', '3-26', '3-28', '3-28', '3-28', '3-31', '3-31']))
+# print(checkwin(['3-1', '3-2', '3-3', '3-19', '3-20', '3-21', '3-24', '3-25', '3-26', '3-28', '3-28', '3-28', '3-31', '3-31']))
 
 # def convertdTtohT(dTile,playerSequence): #A dTile, player sequence of hT
 #     if playerSequence == 1:
@@ -566,7 +565,11 @@ def gangAction1(screen,playerA,playerB):
 def gangAction2(screen,playerA):
     hTNameList = playerA.get_hTNameList()
     hTNameList = tNametoInt(hTNameList)
-    tName = f"3-{getQura(hTNameList)}"
+    tName = f"3-{getQura(hTNameList)[0]}"
+    indexlist = []
+    for i in range(len(playerA.hT)):
+        if playerA.hT[i].name == tName:
+            indexlist.append(i)
     if playerA.sequence == 1:
         for i in range(4):
             tileObj = tile(screen,tName, False)
@@ -577,15 +580,62 @@ def gangAction2(screen,playerA):
             tileObj.rect.top = 720
             tileObj.blitSelf()
             playerA.aT.append(tileObj)
-        indexlist = []
-        for i in range(len(playerA.hT)):
-            if playerA.hT[i].name == tName:
-                indexlist.append(i)
         for i in range(4):
             playerA.hT.pop(indexlist[i]-i)
             for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
                 x.rect.x -= 60
-        playerA.tileSorting2(screen)
+
+    elif playerA.sequence == 2:
+        for i in range(4):
+            tileObj = tile(screen, tName, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tName + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,90)
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.left = 1130
+            tileObj.rect.bottom = 720 - len(playerA.aT) * 48
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+        for i in range(4):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.y += 48
+
+    elif playerA.sequence == 3:
+        for i in range(4):
+            tileObj = tile(screen, tName, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tName + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,180)
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.top = 140 - 60 - 70
+            tileObj.rect.left = 940 - 48 - len(playerA.aT) * 48
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+        for i in range(4):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.x += 48
+
+
+    elif playerA.sequence == 4:
+        for i in range(4):
+            tileObj = tile(screen, tName, False)
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tName + ".png")
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
+            tileObj.image = pygame.transform.rotate(tileObj.image,270)
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.top = 80 + len(playerA.aT) * 48
+            tileObj.rect.left = 10
+            tileObj.blitSelf()
+            playerA.aT.append(tileObj)
+
+        for i in range(4):
+            playerA.hT.pop(indexlist[i]-i)
+            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                x.rect.y -= 48
+
+    playerA.tileSorting2(screen)
 
 
 

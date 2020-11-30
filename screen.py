@@ -2,36 +2,39 @@ import sys
 import pygame
 import setting
 import buttons
+
 class wnd1:
     def __init__(self):
+        #set up the screen display, the icon, and the caption
         pygame.init()
         pygame.display.set_caption("麻将")
         icon = pygame.image.load("pic/tile_type4_300ppi/4-33.png")
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode((1200, 800),pygame.RESIZABLE)
+
+        #
         start = pygame.image.load("pic/Start.png")
         start = pygame.transform.scale(start, (200, 100))
         startRect = start.get_rect()
         startRect.centerx = screen.get_rect().centerx
         startRect.centery = screen.get_rect().centery
         startRect.y = startRect.y+300
-
+        startImg = pygame.image.load("pic/StartImg.png")
+        startImg = pygame.transform.smoothscale(startImg,(625,300))
+        startImgRect = startImg.get_rect()
+        startImgRect.centerx = screen.get_rect().centerx
+        startImgRect.centery = screen.get_rect().centery
         running = True
         while running:
             screen.fill((146, 168, 209))
             screen.blit(start, startRect)
-
+            screen.blit(startImg, startImgRect)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(startRect)
-                    print(event.pos)
                     if startRect.collidepoint(event.pos):
-                        print("1")
                         wnd2(screen)
-                    else:
-                        print("2")
             pygame.display.update()
 
 
@@ -61,10 +64,10 @@ class wnd2:
         player3.hT = setting.creatHtile(screen, player3.initTile, player3.sequence)
         player4.hT = setting.creatHtile(screen, player4.initTile, player4.sequence)
 
-        print(player1)
-        print(player2)
-        print(player3)
-        print(player4)
+        # print(player1)
+        # print(player2)
+        # print(player3)
+        # print(player4)
         running = True
         runindexList = [1, 2, 3, 4]
         runindex = 1
@@ -126,13 +129,10 @@ class wnd2:
                     print("要碰了")
                     runindex = 2
                     setting.pengAction(screen, player2, player1)
-
                 elif player3.checkPeng(player1):
                     print("要碰了")
                     runindex = 3
                     setting.pengAction(screen, player3, player1)
-
-
                 elif player4.checkPeng(player1):
                     print("要碰了")
                     runindex = 4
@@ -143,13 +143,10 @@ class wnd2:
                 if player1.checkPeng(player2):
                     peng.blitSelf()
                     checkPeng = True
-
                 elif player3.checkPeng(player2):
                     print("要碰了")
                     runindex = 3
                     setting.pengAction(screen, player3, player2)
-
-
                 elif player4.checkPeng(player2):
                     print("要碰了")
                     runindex = 4
@@ -159,13 +156,10 @@ class wnd2:
                 if player1.checkPeng(player3):
                     peng.blitSelf()
                     checkPeng = True
-
                 elif player2.checkPeng(player3):
                     print("要碰了")
                     runindex = 2
                     setting.pengAction(screen, player2, player3)
-
-
                 elif player4.checkPeng(player3):
                     print("要碰了")
                     runindex = 4
@@ -181,13 +175,13 @@ class wnd2:
                     gang.blitSelf()
                     checkGang = player1.checkGang(player4)
 
-                elif player2.checkGang(player4) == 1:
+                elif player2.checkGang(player4) in [1,2]:
                     print("要杠了")
                     runindex = 2
                     setting.gangAction1(screen, player2, player4)
                     player2.drawATile(screen, tileRemain)
 
-                elif player3.checkGang(player4) == 1:
+                elif player3.checkGang(player4) in [1,2]:
                     print("要杠了")
                     runindex = 3
                     setting.gangAction1(screen, player3, player4)
@@ -276,27 +270,24 @@ class wnd2:
                             checkPeng = False
 
                     elif gang.rect.collidepoint(event.pos):
-                        if checkGang == 1:
+                        if checkGang == 1: # if check gang is 1
                             if runindex == 1:
                                 setting.gangAction1(screen, player1, player4)
                                 player1.drawATile(screen, tileRemain)
                                 runindex = 1
-                                checkGang = False
+                                checkGang = 3
                             elif runindex == 3:
                                 runindex = 1
-                                checkGang = False
+                                checkGang = 3
                             elif runindex == 4:
                                 setting.gangAction1(screen, player1, player3)
                                 runindex = 1
-                                checkGang = False
+                                checkGang = 3
                         elif checkGang == 2:
                                 setting.gangAction2(screen,player1)
                         player1.drawATile(screen, tileRemain) # after gang player 1 need to draw a card to maintain the balance
 
-                    elif runindex == 1: # change to player sequence later
-                        # print(player1.hT)
-                        # if len(player1.hT)<14:
-                        #     player1.drawATile(screen, tileRemain)
+                    if runindex == 1: # change to player sequence later
                         for i in range(len(player1.hT)):
                             if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False: # selected a tile
                                 player1.hT[i].rect.top -= 30
@@ -470,6 +461,5 @@ class wnd5Lost:
                     elif quitRect.collidepoint(event.pos):
                         sys.exit()
             pygame.display.update()
-
 
 wnd1()
