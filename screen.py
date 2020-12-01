@@ -207,13 +207,15 @@ class wnd2:
                     runindex = 2
                     setting.gangAction1(screen, player2, player4)
                     player2.drawATile(screen, tileRemain)
+                    # checkP2Draw = False
                     print("2 摸牌了")
                 elif player3.checkGang(player4) in [1,2]:
                     print("3杠了4")
                     runindex = 3
                     setting.gangAction1(screen, player3, player4)
-                    player4.drawATile(screen, tileRemain)
-                    print("4 摸牌了")
+                    player3.drawATile(screen, tileRemain)
+                    # checkP3Draw = False
+                    print("3 摸牌了")
 
 
             elif runindex == 2 and player1.dT !=[]:
@@ -222,6 +224,7 @@ class wnd2:
                     runindex = 2
                     setting.gangAction1(screen, player2, player1)
                     player2.drawATile(screen, tileRemain)
+                    # checkP2Draw = False
                     print("2 摸牌了")
 
                 elif player3.checkGang(player1) == 1:
@@ -229,6 +232,7 @@ class wnd2:
                     runindex = 3
                     setting.gangAction1(screen, player3, player1)
                     player3.drawATile(screen, tileRemain)
+                    # checkP3Draw = False
                     print("3 摸牌了")
 
                 elif player4.checkGang(player1) == 1:
@@ -236,6 +240,8 @@ class wnd2:
                     runindex = 4
                     setting.gangAction1(screen, player4, player1)
                     player4.drawATile(screen, tileRemain)
+                    # checkP4Draw = False
+
                     print("4 摸牌了")
 
 
@@ -250,6 +256,7 @@ class wnd2:
                     runindex = 3
                     setting.gangAction1(screen, player3, player2)
                     player3.drawATile(screen, tileRemain)
+                    # checkP3Draw = False
                     print("3 摸牌了")
 
                 elif player4.checkGang(player2) == 1:
@@ -257,6 +264,8 @@ class wnd2:
                     runindex = 4
                     setting.gangAction1(screen, player4, player2)
                     player4.drawATile(screen, tileRemain)
+                    # checkP4Draw = False
+
                     print("4 摸牌了")
 
 
@@ -271,6 +280,8 @@ class wnd2:
                     runindex = 2
                     setting.gangAction1(screen, player2, player3)
                     player2.drawATile(screen, tileRemain)
+                    # checkP2Draw = False
+
                     print("2 摸牌了")
 
                 elif player4.checkGang(player3) == 1:
@@ -278,6 +289,8 @@ class wnd2:
                     runindex = 4
                     setting.gangAction1(screen, player4, player3)
                     player4.drawATile(screen, tileRemain)
+                    # checkP4Draw = False
+
                     print("4 摸牌了")
 
             else:
@@ -333,6 +346,8 @@ class wnd2:
                                 wnd4Tied(screen)
                             else:
                                 print("1 摸牌了")
+                        checkP1Draw = True
+
                         for i in range(len(player1.hT)):
                             if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False: # selected a tile
                                 player1.hT[i].rect.top -= 30
@@ -348,7 +363,6 @@ class wnd2:
                                 setting.creatDtile(screen,player1.hT[i],player1.dT,1) #add the tile into dT
                                 player1.disTile(player1.hT[i],i) #remove the tile from hT
                                 print("1出牌了")
-                                checkP1Draw = True
                                 if player2.checkHuCong(player1): # if discarded Tile let player 2 win
                                     wnd5Lost(screen, "You let Player 2 win!!!")
                                 elif player3.checkHuCong(player1): # if discarded Tile let player 3 win
