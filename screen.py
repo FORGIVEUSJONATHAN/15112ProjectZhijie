@@ -1,3 +1,7 @@
+
+## Course Number: 15112
+## Andrew ID: zhijiex
+
 import sys
 import pygame
 import setting
@@ -71,9 +75,13 @@ class wnd2:
         running = True
         runindexList = [1, 2, 3, 4]
         runindex = 1
-        count = 0
         checkPeng = False # indicator of Peng
-        checkGang = 3 # indicator of Gang
+        checkGang = 3 # indicator of Gang, 1: True with type1, 2: True with type 2, 3: False
+        checkHu = False
+        checkP1Draw = True
+        checkP2Draw = True
+        checkP3Draw = True
+        checkP4Draw = True
         hu = buttons.hu(screen)
         peng = buttons.peng(screen)
         gang = buttons.gang(screen)
@@ -88,82 +96,101 @@ class wnd2:
             # chi = buttons.chi(screen)
             # chi.blitSelf()
 
-            # hu = buttons.hu(screen)
-            # hu.blitSelf()
             # guo = buttons.guo(screen)
             # guo.blitSelf()
 
             dTListAll = setting.getdTAll(player1,player2,player3,player4)
 
             # check 自摸
-            if runindex == 1 and setting.checkwin(player1.get_hTNameList()):
+            if runindex == 1 and setting.checkwin(player1.get_hTNameList()): # check player 1 winning by drawing a tile
                 hu.blitSelf()
-            elif runindex == 2 and setting.checkwin(player2.get_hTNameList()):
+                checkHu = True
+            elif runindex == 2 and setting.checkwin(player2.get_hTNameList()): # check player 2 winning by drawing a tile
                 wnd5Lost(screen,"Player 2 won!!!")
-            elif runindex == 3 and setting.checkwin(player3.get_hTNameList()):
+            elif runindex == 3 and setting.checkwin(player3.get_hTNameList()): # check player 3 winning by drawing a tile
                 wnd5Lost(screen,"Player 3 won!!!")
-            elif runindex == 4 and setting.checkwin(player4.get_hTNameList()):
-                wnd5Lost(screen,"Player 3 won!!!")
-
+            elif runindex == 4 and setting.checkwin(player4.get_hTNameList()): # check player 4 winning by drawing a tile
+                wnd5Lost(screen,"Player 4 won!!!")
+            else: # no players win by drawing a tile
+                checkHu = False
 
 
             if runindex == 1 and player4.dT != []: # check the peng option
                 if player1.checkPeng(player4):
                     peng.blitSelf()
-                    checkPeng = True
-
+                    checkP1Draw = False
                 elif player2.checkPeng(player4):
-                    print("要碰了")
+                    print("2碰了4的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player4)
+                    checkP2Draw = False
 
 
                 elif player3.checkPeng(player4):
-                    print("要碰了")
+                    print("3碰了4的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player4)
+                    checkP3Draw = False
+
+                checkPeng = True
 
 
             elif runindex == 2 and player1.dT != []:
                 if player2.checkPeng(player1):
-                    print("要碰了")
+                    print("2碰了1的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player1)
+                    checkP2Draw = False
+
                 elif player3.checkPeng(player1):
-                    print("要碰了")
+                    print("3碰了1的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player1)
+                    checkP3Draw = False
+
                 elif player4.checkPeng(player1):
-                    print("要碰了")
+                    print("4碰了1的牌")
                     runindex = 4
                     setting.pengAction(screen, player4, player1)
+                    checkP4Draw = False
+
+                checkPeng = True
 
 
             elif runindex == 3 and player2.dT != []:
                 if player1.checkPeng(player2):
                     peng.blitSelf()
-                    checkPeng = True
+                    checkP1Draw = False
+
                 elif player3.checkPeng(player2):
-                    print("要碰了")
+                    print("3碰了2的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player2)
-                elif player4.checkPeng(player2):
-                    print("要碰了")
-                    runindex = 4
+                    checkP3Draw = False
 
+                elif player4.checkPeng(player2):
+                    print("4碰了2的牌")
+                    runindex = 4
+                    checkP4Draw = False
+                checkPeng = True
 
             elif runindex == 4 and player3.dT != []:
                 if player1.checkPeng(player3):
                     peng.blitSelf()
-                    checkPeng = True
+                    checkP1Draw = False
+
                 elif player2.checkPeng(player3):
-                    print("要碰了")
+                    print("2碰了3的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player3)
+                    checkP2Draw = False
+
                 elif player4.checkPeng(player3):
-                    print("要碰了")
+                    print("4碰了3的牌")
                     runindex = 4
                     setting.pengAction(screen, player4, player3)
+                    checkP4Draw = False
+                checkPeng = True
 
 
             else:
@@ -176,16 +203,17 @@ class wnd2:
                     checkGang = player1.checkGang(player4)
 
                 elif player2.checkGang(player4) in [1,2]:
-                    print("要杠了")
+                    print("2杠了4")
                     runindex = 2
                     setting.gangAction1(screen, player2, player4)
                     player2.drawATile(screen, tileRemain)
-
+                    print("2 摸牌了")
                 elif player3.checkGang(player4) in [1,2]:
-                    print("要杠了")
+                    print("3杠了4")
                     runindex = 3
                     setting.gangAction1(screen, player3, player4)
                     player4.drawATile(screen, tileRemain)
+                    print("4 摸牌了")
 
 
             elif runindex == 2 and player1.dT !=[]:
@@ -194,18 +222,21 @@ class wnd2:
                     runindex = 2
                     setting.gangAction1(screen, player2, player1)
                     player2.drawATile(screen, tileRemain)
+                    print("2 摸牌了")
 
                 elif player3.checkGang(player1) == 1:
-                    print("要杠了")
+                    print("3杠了1")
                     runindex = 3
                     setting.gangAction1(screen, player3, player1)
                     player3.drawATile(screen, tileRemain)
+                    print("3 摸牌了")
 
                 elif player4.checkGang(player1) == 1:
-                    print("要杠了")
+                    print("4杠了1")
                     runindex = 4
                     setting.gangAction1(screen, player4, player1)
                     player4.drawATile(screen, tileRemain)
+                    print("4 摸牌了")
 
 
             elif runindex == 3 and player2.dT != []:
@@ -215,16 +246,18 @@ class wnd2:
                     checkGang = player1.checkGang(player2)
 
                 elif player3.checkGang(player2) == 1:
-                    print("要杠了")
+                    print("3杠了2")
                     runindex = 3
                     setting.gangAction1(screen, player3, player2)
                     player3.drawATile(screen, tileRemain)
+                    print("3 摸牌了")
 
                 elif player4.checkGang(player2) == 1:
-                    print("要杠了")
+                    print("4杠了2")
                     runindex = 4
                     setting.gangAction1(screen, player4, player2)
                     player4.drawATile(screen, tileRemain)
+                    print("4 摸牌了")
 
 
             elif runindex == 4 and player3.dT != []:
@@ -232,19 +265,21 @@ class wnd2:
                     print("能gang")
                     gang.blitSelf()
                     checkGang = player1.checkGang(player3)
-                    player1.drawATile(screen, tileRemain)
 
                 elif player2.checkGang(player3) == 1:
-                    print("要杠了")
+                    print("2杠了3")
                     runindex = 2
                     setting.gangAction1(screen, player2, player3)
                     player2.drawATile(screen, tileRemain)
+                    print("2 摸牌了")
 
-                elif player4.checkGang(player1) == 1:
-                    print("要杠了")
+                elif player4.checkGang(player3) == 1:
+                    print("4杠了3")
                     runindex = 4
                     setting.gangAction1(screen, player4, player3)
                     player4.drawATile(screen, tileRemain)
+                    print("4 摸牌了")
+
             else:
                 checkGang = 3
 
@@ -252,42 +287,52 @@ class wnd2:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if hu.rect.collidepoint(event.pos):
+
+                if event.type == pygame.MOUSEBUTTONDOWN: # if the player clicked the button
+                    if hu.rect.collidepoint(event.pos) and checkHu == True: # check whether player 1 clicked the win button
                         wnd3Win(screen)
-                    if peng.rect.collidepoint(event.pos) and checkPeng == True: # 解决按空白处的问题
-                        if runindex == 1:
+
+                    if peng.rect.collidepoint(event.pos) and checkPeng == True: # check whether player 1 clicked the peng button
+                        if runindex == 1: # the current running index 1
+                            print("1碰了4的牌")
                             setting.pengAction(screen,player1,player4)
                             runindex = 1
                             checkPeng = False
-                        elif runindex == 3:
+                        elif runindex == 3: # the current running index 3
+                            print("1碰了4的牌")
                             setting.pengAction(screen, player1, player2)
                             runindex = 1
                             checkPeng = False
-                        elif runindex == 4:
+                        elif runindex == 4:  # the current running index 4
+                            print("1碰了4的牌")
                             setting.pengAction(screen, player1, player3)
                             runindex = 1
                             checkPeng = False
 
-                    elif gang.rect.collidepoint(event.pos):
+                    elif gang.rect.collidepoint(event.pos) and checkGang in [1,2]: #check whether player 1 clicked the Gang Action
                         if checkGang == 1: # if check gang is 1
                             if runindex == 1:
                                 setting.gangAction1(screen, player1, player4)
-                                player1.drawATile(screen, tileRemain)
                                 runindex = 1
-                                checkGang = 3
+                                checkGang = 3 # check gang is not available next time
                             elif runindex == 3:
+                                setting.gangAction1(screen, player1, player2)
                                 runindex = 1
-                                checkGang = 3
+                                checkGang = 3 # check gang is not available next time
                             elif runindex == 4:
                                 setting.gangAction1(screen, player1, player3)
                                 runindex = 1
-                                checkGang = 3
-                        elif checkGang == 2:
+                                checkGang = 3 # check gang is not available next time
+                        elif checkGang == 2: # if check gang is 2, has 4 tiles on hand, player index must be one
                                 setting.gangAction2(screen,player1)
                         player1.drawATile(screen, tileRemain) # after gang player 1 need to draw a card to maintain the balance
-
-                    if runindex == 1: # change to player sequence later
+                        print("1 摸牌了")
+                    if runindex == 1: # player 1 round
+                        if  checkP1Draw == True:
+                            if player1.drawATile(screen, tileRemain) == False: # check for a tied game or player 1 draw a tile
+                                wnd4Tied(screen)
+                            else:
+                                print("1 摸牌了")
                         for i in range(len(player1.hT)):
                             if player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status == False: # selected a tile
                                 player1.hT[i].rect.top -= 30
@@ -300,68 +345,86 @@ class wnd2:
                                         player1.hT[x].status = False
                                 break
                             elif player1.hT[i].rect.collidepoint(event.pos) and player1.hT[i].status: # click on the selected tile and discard it
-                                print(len(player1.dT))
-                                setting.creatDtile(screen,player1.hT[i],player1.dT,1)
-                                player1.disTile(player1.hT[i],i)
-                                count = count + 1 # count the number of discarded tile
-
-                                if player2.checkHuCong(player1):
+                                setting.creatDtile(screen,player1.hT[i],player1.dT,1) #add the tile into dT
+                                player1.disTile(player1.hT[i],i) #remove the tile from hT
+                                print("1出牌了")
+                                checkP1Draw = True
+                                if player2.checkHuCong(player1): # if discarded Tile let player 2 win
                                     wnd5Lost(screen, "You let Player 2 win!!!")
-                                elif player3.checkHuCong(player1):
+                                elif player3.checkHuCong(player1): # if discarded Tile let player 3 win
                                     wnd5Lost(screen, "You let Player 3 win!!!")
-                                elif player4.checkHuCong(player1):
+                                elif player4.checkHuCong(player1): # if discarded Tile let player 4 win
                                     wnd5Lost(screen, "You let Player 4 win!!!")
 
-                                runindex = 2
-                                if player2.drawATile(screen,tileRemain) == False: # check for a tied game
-                                    wnd4Tied(screen)
-                                print(len(player1.hT))
+                                runindex = 2 # move index to the next player
+
                                 break
-                    elif runindex == 2:
-                        dTname = player2.disTileName(dTListAll)
-                        player2.disTileAct(screen,dTname)
-                        # player2.disTileRandom(screen) # player 2 discard a card
-                        if player1.checkHuCong(player2):
+
+                    elif runindex == 2: # player 2 round
+                        if  checkP2Draw == True:
+                            if player2.drawATile(screen,tileRemain) == False:  # check for a tied game or player 2 draw a tile
+                                wnd4Tied(screen)
+                            else:
+                                print("2 摸牌了")
+                        dTname = player2.disTileName(dTListAll) # get the intended discard tile's name
+                        player2.disTileAct(screen,dTname) # remove tile from dT, add tile to hT
+                        print("2出牌了")
+                        checkP2Draw = True
+
+                        # player2.disTileRandom(screen) # player 2 discard a random card
+                        if player1.checkHuCong(player2): # check whether player 2 let player 1 win
                             hu.blitSelf()
-                        elif player3.checkHuCong(player2):
+                            checkHu = True
+                        elif player3.checkHuCong(player2):  # check whether player 2 let player 3 win
                             wnd5Lost(screen, "Player 2 let Player 3 win!!!")
-                        elif player4.checkHuCong(player2):
+                        elif player4.checkHuCong(player2):  # check whether player 2 let player 4 win
                             wnd5Lost(screen, "Player 2 let Player 4 win!!!")
 
                         runindex = 3
-                        if player3.drawATile(screen, tileRemain) == False:# check for a tied game
-                            wnd4Tied(screen)
 
-                    elif runindex == 3:
-                        dTname = player3.disTileName(dTListAll)
-                        player3.disTileAct(screen, dTname)
+                    elif runindex == 3: # player 3 round
+                        if checkP3Draw == True:
+                            if player3.drawATile(screen, tileRemain) == False and checkPeng:# check for a tied game or player 3 draw a tile
+                                wnd4Tied(screen)
+                            else:
+                                print("3 摸牌了")
+                        dTname = player3.disTileName(dTListAll) # get the intended discard tile's name
+                        player3.disTileAct(screen, dTname) # remove tile from dT, add tile to hT
+                        print("3出牌了")
+                        checkP3Draw = True
+
                         # player3.disTileRandom(screen) # player 3 discard a card
-                        if player1.checkHuCong(player3):
+                        if player1.checkHuCong(player3): # check whether player 3 let player 1 win
                             hu.blitSelf()
-                        elif player2.checkHuCong(player3):
+                            checkHu = True
+                        elif player2.checkHuCong(player3): # check whether player 3 let player 2 win
                             wnd5Lost(screen, "Player 3 let Player 2 win!!!")
-                        elif player4.checkHuCong(player3):
+                        elif player4.checkHuCong(player3):# check whether player 3 let player 4 win
                             wnd5Lost(screen, "Player 3 let Player 4 win!!!")
 
                         runindex = 4
-                        if player4.drawATile(screen, tileRemain) == False:# check for a tied game
-                            wnd4Tied(screen)
 
-                    elif runindex == 4:
-                        dTname = player4.disTileName(dTListAll)
-                        player4.disTileAct(screen, dTname)
 
+                    elif runindex == 4: # player 4 round
+                        if checkP4Draw == True:
+                            if player4.drawATile(screen, tileRemain) == False:# check for a tied game or player 4 draw a tile
+                                wnd4Tied(screen)
+                            else:
+                                print("4 摸牌了")
+                        dTname = player4.disTileName(dTListAll)# get the intended discard tile's name
+                        player4.disTileAct(screen, dTname) # remove tile from dT, add tile to hT
+                        print("4出牌了")
                         # player4.disTileRandom(screen) # player 4 discard a card
-                        if player1.checkHuCong(player4):
+                        checkP4Draw = True
+                        if player1.checkHuCong(player4): # check whether player 4 let player 1 win
                             hu.blitSelf()
-                        elif player2.checkHuCong(player4):
+                            checkHu = True
+                        elif player2.checkHuCong(player4): # check whether player 4 let player 2 win
                             wnd5Lost(screen, "Player 4 let Player 2 win!!!")
-                        elif player3.checkHuCong(player4):
+                        elif player3.checkHuCong(player4): # check whether player 4 let player 3 win
                             wnd5Lost(screen, "Player 4 let Player 3 win!!!")
 
                         runindex = 1
-                        if player1.drawATile(screen, tileRemain) == False: # check for a tied game
-                            wnd4Tied(screen)
 
             pygame.display.update()
 

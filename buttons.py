@@ -1,3 +1,5 @@
+## Course Number: 15112
+## Andrew ID: zhijiex
 import pygame
 
 class square:

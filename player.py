@@ -1,8 +1,8 @@
-import random
-import sys
-# from screen import *
-import pygame
 
+## Course Number: 15112
+## Andrew ID: zhijiex
+import random
+import pygame
 import setting
 from tile import tile
 
@@ -36,6 +36,7 @@ class player:
             tileObj.rect.y = self.hT[0].rect.y
             tileObj.blitSelf()
             self.hT.append(tileObj)
+            tileStack.pop(0)
 
         elif self.sequence == 2:
             tileObj = tile(screen,tileStack[0], False)
@@ -47,6 +48,7 @@ class player:
             tileObj.rect.y = self.hT[len(self.hT)-1].rect.y - 48
             tileObj.blitSelf()
             self.hT.append(tileObj)
+            tileStack.pop(0)
 
         elif self.sequence == 3:
             tileObj = tile(screen,tileStack[0], False)
@@ -58,6 +60,7 @@ class player:
             tileObj.rect.y = self.hT[0].rect.y
             tileObj.blitSelf()
             self.hT.append(tileObj)
+            tileStack.pop(0)
 
         elif self.sequence == 4:
             tileObj = tile(screen,tileStack[0], False)
@@ -68,10 +71,8 @@ class player:
             tileObj.rect.y = self.hT[len(self.hT)-1].rect.y + 48
             tileObj.blitSelf()
             self.hT.append(tileObj)
-        tileStack.pop(0)
+            tileStack.pop(0)
         self.tileSorting2(screen)
-        print("摸牌了")
-        # if self.sequence == 1:
 
     def disTile(self,Atile,indexofTile): # A tile is the tile the player discard
         self.hT.pop(indexofTile)

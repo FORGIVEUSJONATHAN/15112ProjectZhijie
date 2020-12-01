@@ -1,5 +1,6 @@
-import random
-import buttons
+
+## Course Number: 15112
+## Andrew ID: zhijiex
 from player import *
 import pygame
 
@@ -640,7 +641,7 @@ def gangAction2(screen,playerA):
 
 
 
-def getdTAll(playerA,playerB,playerC,playerD):
+def getdTAll(playerA,playerB,playerC,playerD): # returned list as "3-11","3-12"
     dTAll = []
     dTAll = playerA.get_dTNameList() + playerB.get_dTNameList()+ playerC.get_dTNameList()+ playerD.get_dTNameList()
-    return dTAll # ass "3-11","3-12"
+    return dTAll

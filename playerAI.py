@@ -1,3 +1,5 @@
+## Course Number: 15112
+## Andrew ID: zhijiex
 from player import *
 from setting import *
 class playerAI(player):
@@ -136,8 +138,8 @@ class playerAI(player):
             if dTName == self.hT[i].name:
                 tileIndex = i
                 break
-        setting.creatDtile(screen, self.hT[tileIndex], self.dT, self.sequence)
-        self.hT.pop(tileIndex)
+        setting.creatDtile(screen, self.hT[tileIndex], self.dT, self.sequence) # add the tile into the dT
+        self.hT.pop(tileIndex) # remove the tile from hT
         if self.sequence == 2:
             for i in self.hT[tileIndex:len(self.hT)]:
                 i.rect.top += 48
