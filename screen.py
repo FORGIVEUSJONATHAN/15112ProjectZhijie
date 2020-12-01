@@ -16,7 +16,6 @@ class wnd1:
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode((1200, 800),pygame.RESIZABLE)
 
-        #
         start = pygame.image.load("pic/Start.png")
         start = pygame.transform.scale(start, (200, 100))
         startRect = start.get_rect()
@@ -44,14 +43,17 @@ class wnd1:
 
 class wnd2:
     def __init__(self,screen):
+
         global player4, player3, player2, player1
         self.screen = screen
         pygame.display.set_caption("麻将")
         screen = pygame.display.set_mode((1200,800))
-        screenRect = screen.get_rect()
-
+        bgm = pygame.mixer.music.load('sound/BackGround.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.10)
+        pengSound = pygame.mixer.Sound('sound/PengSound.wav')
+        gangSound = pygame.mixer.Sound('sound/GangSound.wav')
         listofPlayer = setting.drawTileAll()
-
         tileRemain = listofPlayer[0]
         for i in listofPlayer[1:5]: # assign player with corresponding sequence
             if i.sequence == 1:
@@ -123,6 +125,7 @@ class wnd2:
                     print("2碰了4的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player4)
+                    pengSound.play()
                     checkP2Draw = False
 
 
@@ -130,6 +133,7 @@ class wnd2:
                     print("3碰了4的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player4)
+                    pengSound.play()
                     checkP3Draw = False
 
                 checkPeng = True
@@ -140,18 +144,21 @@ class wnd2:
                     print("2碰了1的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player1)
+                    pengSound.play()
                     checkP2Draw = False
 
                 elif player3.checkPeng(player1):
                     print("3碰了1的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player1)
+                    pengSound.play()
                     checkP3Draw = False
 
                 elif player4.checkPeng(player1):
                     print("4碰了1的牌")
                     runindex = 4
                     setting.pengAction(screen, player4, player1)
+                    pengSound.play()
                     checkP4Draw = False
 
                 checkPeng = True
@@ -166,11 +173,14 @@ class wnd2:
                     print("3碰了2的牌")
                     runindex = 3
                     setting.pengAction(screen, player3, player2)
+                    pengSound.play()
                     checkP3Draw = False
 
                 elif player4.checkPeng(player2):
                     print("4碰了2的牌")
                     runindex = 4
+                    setting.pengAction(screen, player4, player2)
+                    pengSound.play()
                     checkP4Draw = False
                 checkPeng = True
 
@@ -183,12 +193,14 @@ class wnd2:
                     print("2碰了3的牌")
                     runindex = 2
                     setting.pengAction(screen, player2, player3)
+                    pengSound.play()
                     checkP2Draw = False
 
                 elif player4.checkPeng(player3):
                     print("4碰了3的牌")
                     runindex = 4
                     setting.pengAction(screen, player4, player3)
+                    pengSound.play()
                     checkP4Draw = False
                 checkPeng = True
 
@@ -206,6 +218,7 @@ class wnd2:
                     print("2杠了4")
                     runindex = 2
                     setting.gangAction1(screen, player2, player4)
+                    gangSound.play()
                     player2.drawATile(screen, tileRemain)
                     # checkP2Draw = False
                     print("2 摸牌了")
@@ -213,6 +226,7 @@ class wnd2:
                     print("3杠了4")
                     runindex = 3
                     setting.gangAction1(screen, player3, player4)
+                    gangSound.play()
                     player3.drawATile(screen, tileRemain)
                     # checkP3Draw = False
                     print("3 摸牌了")
@@ -223,6 +237,7 @@ class wnd2:
                     print("要杠了")
                     runindex = 2
                     setting.gangAction1(screen, player2, player1)
+                    gangSound.play()
                     player2.drawATile(screen, tileRemain)
                     # checkP2Draw = False
                     print("2 摸牌了")
@@ -231,6 +246,7 @@ class wnd2:
                     print("3杠了1")
                     runindex = 3
                     setting.gangAction1(screen, player3, player1)
+                    gangSound.play()
                     player3.drawATile(screen, tileRemain)
                     # checkP3Draw = False
                     print("3 摸牌了")
@@ -239,6 +255,7 @@ class wnd2:
                     print("4杠了1")
                     runindex = 4
                     setting.gangAction1(screen, player4, player1)
+                    gangSound.play()
                     player4.drawATile(screen, tileRemain)
                     # checkP4Draw = False
 
@@ -255,6 +272,7 @@ class wnd2:
                     print("3杠了2")
                     runindex = 3
                     setting.gangAction1(screen, player3, player2)
+                    gangSound.play()
                     player3.drawATile(screen, tileRemain)
                     # checkP3Draw = False
                     print("3 摸牌了")
@@ -263,6 +281,7 @@ class wnd2:
                     print("4杠了2")
                     runindex = 4
                     setting.gangAction1(screen, player4, player2)
+                    gangSound.play()
                     player4.drawATile(screen, tileRemain)
                     # checkP4Draw = False
 
@@ -279,6 +298,7 @@ class wnd2:
                     print("2杠了3")
                     runindex = 2
                     setting.gangAction1(screen, player2, player3)
+                    gangSound.play()
                     player2.drawATile(screen, tileRemain)
                     # checkP2Draw = False
 
@@ -288,6 +308,7 @@ class wnd2:
                     print("4杠了3")
                     runindex = 4
                     setting.gangAction1(screen, player4, player3)
+                    gangSound.play()
                     player4.drawATile(screen, tileRemain)
                     # checkP4Draw = False
 
@@ -309,16 +330,19 @@ class wnd2:
                         if runindex == 1: # the current running index 1
                             print("1碰了4的牌")
                             setting.pengAction(screen,player1,player4)
+                            pengSound.play()
                             runindex = 1
                             checkPeng = False
                         elif runindex == 3: # the current running index 3
                             print("1碰了4的牌")
                             setting.pengAction(screen, player1, player2)
+                            pengSound.play()
                             runindex = 1
                             checkPeng = False
                         elif runindex == 4:  # the current running index 4
                             print("1碰了4的牌")
                             setting.pengAction(screen, player1, player3)
+                            pengSound.play()
                             runindex = 1
                             checkPeng = False
 
@@ -326,18 +350,23 @@ class wnd2:
                         if checkGang == 1: # if check gang is 1
                             if runindex == 1:
                                 setting.gangAction1(screen, player1, player4)
+                                gangSound.play()
                                 runindex = 1
                                 checkGang = 3 # check gang is not available next time
                             elif runindex == 3:
                                 setting.gangAction1(screen, player1, player2)
+                                gangSound.play()
                                 runindex = 1
                                 checkGang = 3 # check gang is not available next time
                             elif runindex == 4:
                                 setting.gangAction1(screen, player1, player3)
+                                gangSound.play()
                                 runindex = 1
                                 checkGang = 3 # check gang is not available next time
                         elif checkGang == 2: # if check gang is 2, has 4 tiles on hand, player index must be one
                                 setting.gangAction2(screen,player1)
+                                gangSound.play()
+
                         player1.drawATile(screen, tileRemain) # after gang player 1 need to draw a card to maintain the balance
                         print("1 摸牌了")
                     if runindex == 1: # player 1 round
@@ -457,7 +486,8 @@ class wnd3Win:
         quitRect = quit.get_rect()
         quitRect.right = screen.get_rect().right
         quitRect.top = restartRect.top
-
+        pygame.mixer.music.load('sound/Victory.wav')
+        pygame.mixer.music.play(-1)
         running = True
         while running:
             screen.fill((146, 168, 209))
@@ -490,7 +520,8 @@ class wnd4Tied:
         quitRect = quit.get_rect()
         quitRect.right = screen.get_rect().right
         quitRect.top = restartRect.top
-
+        pygame.mixer.music.load('sound/Tied.wav')
+        pygame.mixer.music.play(-1)
         running = True
         while running:
             screen.fill((146, 168, 209))
@@ -522,7 +553,8 @@ class wnd5Lost:
         quitRect = quit.get_rect()
         quitRect.right = screen.get_rect().right
         quitRect.top = restartRect.top
-
+        pygame.mixer.music.load('sound/Lost.wav')
+        pygame.mixer.music.play(-1)
         running = True
         while running:
             screen.fill((146, 168, 209))
