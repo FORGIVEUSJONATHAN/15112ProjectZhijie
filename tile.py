@@ -17,9 +17,9 @@ class tile:
             tile.status = status
         else:
             tile.status = False
-    def blitSelf(self):
-        self.screen.blit(self.image, self.rect)
 
+    def blitSelf(self): # show tile function
+        self.screen.blit(self.image, self.rect)
 
     def __str__(self):
         return f"Location: {self.rect.x}{self.rect.y}, tile status: {self.status}, tile name: {self.name}"

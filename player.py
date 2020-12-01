@@ -22,23 +22,30 @@ class player:
     def __str__(self):
         return f"PlayerSequence: {self.sequence} Player name: {self.name} Player hT: {self.hT} Player dT: {self.dT}"
 
-    def drawATile(self,screen,tileStack): # draw a tile from the stack
+    # draw a tile from the stack
+    def drawATile(self,screen,tileStack):
+        # check whether there is a tile in tile stack
         if tileStack == []:
             return False
+        # when player holds certain number of tiles, they are not able to draw
         elif len(self.hT)+1 not in [1,2,5,8,11,12,14]:
             print( f"player{self.sequence}cannot draw, it has {len(self.hT)} tiles")
-        elif self.sequence == 1: #create the tile object for player 1
-            tileObj = tile(screen,tileStack[0], False)
-            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tileStack[0] + ".png")
-            tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75))
-            tileObj.rect = tileObj.image.get_rect()
-            tileObj.rect.x = self.hT[len(self.hT)-1].rect.x + 60
-            tileObj.rect.y = self.hT[0].rect.y
-            tileObj.blitSelf()
-            self.hT.append(tileObj)
-            tileStack.pop(0)
 
-        elif self.sequence == 2:
+        # next part will add create a tile object for different players
+        # move tile into the hand tile
+        # remove tile from the stack
+        elif self.sequence == 1: #create the tile object for player 1
+            tileObj = tile(screen,tileStack[0], False) #creat the tile object
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/" + tileStack[0] + ".png") # load the tile image
+            tileObj.image = pygame.transform.smoothscale(tileObj.image, (60, 75)) # transform the tile image
+            tileObj.rect = tileObj.image.get_rect()
+            tileObj.rect.x = self.hT[len(self.hT)-1].rect.x + 60 # set the x coordinate of the tile
+            tileObj.rect.y = self.hT[0].rect.y # set the y coordinate of the tile
+            tileObj.blitSelf()
+            self.hT.append(tileObj) # add obj to the hand tile list
+            tileStack.pop(0) # remove the tile from the stack
+
+        elif self.sequence == 2: #create the tile object for player 2
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
@@ -50,7 +57,7 @@ class player:
             self.hT.append(tileObj)
             tileStack.pop(0)
 
-        elif self.sequence == 3:
+        elif self.sequence == 3: #create the tile object for player 3
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
@@ -62,7 +69,7 @@ class player:
             self.hT.append(tileObj)
             tileStack.pop(0)
 
-        elif self.sequence == 4:
+        elif self.sequence == 4: #create the tile object for player 4
             tileObj = tile(screen,tileStack[0], False)
             tileObj.image = pygame.image.load("pic/tile_type3_300ppi/3-b.png")
             tileObj.image = pygame.transform.smoothscale(tileObj.image, (48, 60))
@@ -74,11 +81,13 @@ class player:
             tileStack.pop(0)
         self.tileSorting2(screen)
 
+
     def disTile(self,Atile,indexofTile): # A tile is the tile the player discard
         self.hT.pop(indexofTile)
         for i in self.hT[indexofTile:len(self.hT)]: # reset the rect of the tiles
             i.rect.x -= 60
         print(f"player{self.sequence} has {len(self.hT)} tiles")
+
 
     def disTileRandom(self,screen): # this is a function for Random AI
         ranTileIndex = random.randint(0,len(self.hT)-1)
@@ -98,6 +107,7 @@ class player:
                 i.blitSelf()
         return self.dT[-1]
 
+
     def tileSorting2(self,screen): #sort tiles for tile list as objects
 
         for i in range(len(self.hT)):
@@ -115,37 +125,36 @@ class player:
             self.hT[i].image = self.hT[index].image
             self.hT[index].image = tempImage
 
-        # the algorithm below will cost more time to load image!!!!
-        # tilenamelist = []
-        # for i in self.hT:
-        #     tilenamelist.append(i.name)
-        # tilenamelist = setting.tileSorting1(tilenamelist)
-        # print(tilenamelist)
-        # self.hT = setting.creatHtile(screen,tilenamelist,1)
+    # get the list of all tiles in the hand tile list
     def get_hTNameList(self):
         hTNameList = []
         for i in self.hT:
             hTNameList.append(i.name)
         return hTNameList
 
+    # get the list of all tiles in the discarded tile list
     def get_dTNameList(self):
         dTNameList = []
         for i in self.dT:
             dTNameList.append(i.name)
         return dTNameList
 
+    # check whther cPlayer let other player win
     def checkHuCong(self,cPlayer):
         # a different type of win
         hTNameList = self.get_hTNameList()
         dTileName = cPlayer.dT[-1].name
+        # new list contains other players hand tiles and Cplayer last dT
         hTNameList.append(dTileName)
         hTNameList = setting.tileSorting1(hTNameList)
+        # check whether new list satisfy the winning condition
         return setting.checkwin(hTNameList)
 
-    def checkPeng(self,cPlayer):
+    def checkPeng(self,cPlayer): # check peng
         # if Peng can happen return True
         # cPlayer == current player
         hTNameList = self.get_hTNameList()
+        # count the number of last discarded tile in player's hand
         count = hTNameList.count(cPlayer.dT[-1].name)
         if count == 2:
             return True

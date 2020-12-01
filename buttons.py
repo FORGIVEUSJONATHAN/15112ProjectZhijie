@@ -13,7 +13,7 @@ class square:
     def blitSelf(self):
         self.screen.blit(self.image,self.rect)
 
-class gang:
+class gang: # gang button
     def __init__(self,screen):
         self.screen = screen
         self.image = pygame.image.load("pic/gang.png")
@@ -23,7 +23,7 @@ class gang:
     def blitSelf(self):
         self.screen.blit(self.image,self.rect)
 
-class peng:
+class peng: # peng button
     def __init__(self,screen):
         self.screen = screen
         self.image = pygame.image.load("pic/peng.png")
@@ -33,7 +33,7 @@ class peng:
     def blitSelf(self):
         self.screen.blit(self.image,self.rect)
 
-class chi:
+class chi: # chi button
     def __init__(self,screen):
         self.screen = screen
         self.image = pygame.image.load("pic/chi.png")
@@ -44,7 +44,7 @@ class chi:
         self.screen.blit(self.image,self.rect)
 
 
-class guo:
+class guo: # guo button
     def __init__(self,screen):
         self.screen = screen
         self.image = pygame.image.load("pic/guo.png")
@@ -54,7 +54,7 @@ class guo:
     def blitSelf(self):
         self.screen.blit(self.image,self.rect)
 
-class hu:
+class hu: #hu button
     def __init__(self,screen):
         self.screen = screen
         self.image = pygame.image.load("pic/hu.png")

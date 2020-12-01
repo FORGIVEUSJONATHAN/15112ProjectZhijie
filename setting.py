@@ -56,10 +56,6 @@ def tileSorting1(tilelist): #sort tiles for tile list as string
 # print(tileSorting(['3-1', '3-12', '3-13', '3-14', '3-18', '3-2', '3-22', '3-23', '3-23', '3-29', '3-3', '3-30', '3-5', '3-8']))
 
 
-
-
-
-
 def drawTile(tileStack,sequence):
     pTile = []
     if sequence == 1: # the first player need to draw 14 tiles
@@ -86,29 +82,27 @@ def drawTileAll():
     pTile2 = drawTile(tileStackAll,sequenceList[1])
     pTile3 = drawTile(tileStackAll,sequenceList[2])
     pTile4 = drawTile(tileStackAll,sequenceList[3])
-    player1 = playerAI("AA","HUMAN",sequenceList[0],pTile1,[],[],[])
-    player2 = playerAI("BB","AI",sequenceList[1],pTile2,[],[],[])
-    player3 = playerAI("CC","AI",sequenceList[2],pTile3,[],[],[])
-    player4 = playerAI("DD","AI",sequenceList[3],pTile4,[],[],[])
-    # print(f"tile stack is {tileStackAll}")
+    player1 = playerAI("AA","HUMAN",sequenceList[0],pTile1,[],[],[]) # create player 1 object
+    player2 = playerAI("BB","AI",sequenceList[1],pTile2,[],[],[]) # create player 2 object
+    player3 = playerAI("CC","AI",sequenceList[2],pTile3,[],[],[]) # create player 3 object
+    player4 = playerAI("DD","AI",sequenceList[3],pTile4,[],[],[]) # create player 4 object
     return tileStackAll, player1, player2, player3, player4
     # return the player objects and the remaining tileStack
 
 
-
+# for the first time, create a list of hand tiles
 def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
     tileObjList = []
     if playerNo == 1:
         for i in range(len(pTile)):
-            tileObj = tile(screen,pTile[i],False)
-            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/"+pTile[i]+".png")
-            tileObj.image = pygame.transform.smoothscale(tileObj.image,(60,75))
+            tileObj = tile(screen,pTile[i],False) # create tile object
+            tileObj.image = pygame.image.load("pic/tile_type3_300ppi/"+pTile[i]+".png") # load tile image
+            tileObj.image = pygame.transform.smoothscale(tileObj.image,(60,75)) # rescale the image
             tileObj.rect = tileObj.image.get_rect()
             tileObj.rect.left = 180 + i * 60
             tileObj.rect.top = 640
-
-            tileObj.blitSelf()
-            tileObjList.append(tileObj)
+            tileObj.blitSelf() # show the tile
+            tileObjList.append(tileObj) # add tile into the object list
 
 
     elif playerNo == 2:
@@ -151,15 +145,16 @@ def creatHtile(screen,pTile,playerNo): # will return a list of hand tile object
             tileObj.blitSelf()
             tileObjList.append(tileObj)
 
-    return tileObjList
+    return tileObjList # return the object list
 
 
+# create a discarded tile object
 def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerNo is the player sequence
     num = len(dTlist)
     hTObj.image = pygame.image.load("pic/tile_type3_300ppi/" + hTObj.name + ".png")
     hTObj.image = pygame.transform.smoothscale(hTObj.image, (30, 40))
     hTObj.rect = hTObj.image.get_rect()
-    if playerNo == 1:
+    if playerNo == 1: # for player 1 dT
         if num < 8:
             hTObj.rect.top = 510+10
             hTObj.rect.left = 480+num*30
@@ -170,7 +165,7 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
             hTObj.rect.top = 510+80+10
             hTObj.rect.left = 480+(num-16)*30
 
-    elif playerNo == 2:
+    elif playerNo == 2: # for player 2 dT
         hTObj.image = pygame.transform.rotate(hTObj.image,90)
 
         if num < 8:
@@ -183,7 +178,7 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
             hTObj.rect.top = 510-20 - (num-16)*30
             hTObj.rect.left = 720 + 80
 
-    elif playerNo == 3:
+    elif playerNo == 3: # for player 3 dT
         hTObj.image = pygame.transform.rotate(hTObj.image,180)
 
         if num < 8:
@@ -196,7 +191,7 @@ def creatDtile(screen,hTObj,dTlist,playerNo): # screen, handTile object, playerN
             hTObj.rect.top = 160
             hTObj.rect.left = 690 - (num-16)*30
 
-    elif playerNo == 4:
+    elif playerNo == 4: # for player 4 dT
         hTObj.image = pygame.transform.rotate(hTObj.image,270)
 
         if num < 8:
@@ -251,7 +246,7 @@ def tNametoInt(tileNameList): # this is a function which convert the tile name t
             tileNameList[i] = int(tileNameList[i][2:])
         return tileNameList
 
-
+# get a list of tile names num which appeared twice in hand tile
 def getDouble(numList):
     double = []
     listCopy = numList[:]
@@ -262,7 +257,7 @@ def getDouble(numList):
                 listCopy.remove(i) # tList1 No double
     return double
 
-
+# get a list of tile names num which appeared three times in hand tile
 def getTriple(numList):
     triple = []
     listCopy = numList[:]
@@ -273,7 +268,7 @@ def getTriple(numList):
                 listCopy.remove(i) # tList1 No triple
     return triple
 
-
+# get a list of tile names num which appeared four times in hand tile
 def getQura(numList):
     qura = []
     listCopy = numList[:]
@@ -286,6 +281,7 @@ def getQura(numList):
 # print(getQura([1,2,1,1,3,2,1])) # testing for getQura
 # print(getQura([1,2,12,13,3,1,2,1,2,2]))
 
+# get a list of tile names num which appeared multiple times >=2 in hand tile
 def getMulti(numList):
     multi = []
     listCopy = numList[:]
@@ -312,13 +308,14 @@ def checkSequence(numList):
             return False
     return True
 
+
+
+# check win algo
 def checkwin(hTNameList):
-    # hu = buttons.hu(screen)
     hTNameList = tNametoInt(hTNameList)
     if len(hTNameList) == 2: # HU1 three tiles are the same
         if hTNameList [0] == hTNameList [1]:
             print("Hu")
-            # hu.blitSelf()
             return True
 
     # find all the pairs
@@ -369,9 +366,9 @@ def checkwin(hTNameList):
         for i in multiTile:
             tList2.remove(i)
             tList2.remove(i) # remove a double from the list
-            if checkSequence(tList2): #去掉麻将头之后检查是否组成sequence
+            if checkSequence(tList2): #cut of a double, whether rest can form a sequence
                 return True
-            elif len(getTriple(tList2))!=0: # 还存在三个麻将是一样的
+            elif len(getTriple(tList2))!=0: # whether exist three tiles are still same
                 tripleList = getTriple(tList2) # the length of triple list will only be maximum two, already checked 3 and 4
                 if len(tripleList) == 1:
                     tList3 = tList2[:]
@@ -406,8 +403,6 @@ def checkwin(hTNameList):
 # print(checkwin(['3-1', '3-6', '3-13', '3-14', '3-14', '3-15', '3-16', '3-17', '3-17', '3-22', '3-24', '3-27', '3-29', '3-31']))
 # print(checkwin(['3-1', '3-2', '3-3', '3-19', '3-20', '3-21', '3-24', '3-25', '3-26', '3-28', '3-28', '3-28', '3-31', '3-31']))
 
-# def convertdTtohT(dTile,playerSequence): #A dTile, player sequence of hT
-#     if playerSequence == 1:
 
 def pengAction(screen,playerA,playerB):
     #action happened after the user clicked peng button 碰
@@ -485,6 +480,10 @@ def pengAction(screen,playerA,playerB):
     playerB.dT.remove(playerB.dT[-1])
     playerA.tileSorting2(screen)
 
+
+# get a tile from the discarded tile list of the current player
+# remove 3 tiles from another player
+# add four tiles in to the action tile list
 def gangAction1(screen,playerA,playerB):
     dTname = playerB.dT[-1].name
     indexlist = []
@@ -503,9 +502,10 @@ def gangAction1(screen,playerA,playerB):
             tileObj.blitSelf()
             playerA.aT.append(tileObj)
         for i in range(3):
-            playerA.hT.pop(indexlist[i]-i)
-            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
-                x.rect.x -= 60
+            if indexlist[i]-i < len(playerA.hT):
+                playerA.hT.pop(indexlist[i]-i)
+                for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                    x.rect.x -= 60
 
 
     elif playerA.sequence == 2:
@@ -520,9 +520,10 @@ def gangAction1(screen,playerA,playerB):
             tileObj.blitSelf()
             playerA.aT.append(tileObj)
         for i in range(3):
-            playerA.hT.pop(indexlist[i]-i)
-            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
-                x.rect.y += 48
+            if indexlist[i]-i < len(playerA.hT):
+                playerA.hT.pop(indexlist[i]-i)
+                for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                    x.rect.y += 48
 
     elif playerA.sequence == 3:
         for i in range(4):
@@ -536,9 +537,10 @@ def gangAction1(screen,playerA,playerB):
             tileObj.blitSelf()
             playerA.aT.append(tileObj)
         for i in range(3):
-            playerA.hT.pop(indexlist[i]-i)
-            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
-                x.rect.x += 48
+            if indexlist[i]-i < len(playerA.hT):
+                playerA.hT.pop(indexlist[i]-i)
+                for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                    x.rect.x += 48
 
 
     elif playerA.sequence == 4:
@@ -554,14 +556,17 @@ def gangAction1(screen,playerA,playerB):
             playerA.aT.append(tileObj)
 
         for i in range(3):
-            playerA.hT.pop(indexlist[i]-i)
-            for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
-                x.rect.y -= 48
+            if indexlist[i]-i < len(playerA.hT):
+                playerA.hT.pop(indexlist[i]-i)
+                for x in playerA.hT[indexlist[i]-i:len(playerA.hT)]:  # reset the rect of the tiles
+                    x.rect.y -= 48
 
     playerB.dT.remove(playerB.dT[-1])
     playerA.tileSorting2(screen)
 
 
+# remove 4 tiles from  player
+# add four tiles in to the action tile list
 
 def gangAction2(screen,playerA):
     hTNameList = playerA.get_hTNameList()
@@ -640,7 +645,7 @@ def gangAction2(screen,playerA):
 
 
 
-
+# get all the discarded tile name
 def getdTAll(playerA,playerB,playerC,playerD): # returned list as "3-11","3-12"
     dTAll = []
     dTAll = playerA.get_dTNameList() + playerB.get_dTNameList()+ playerC.get_dTNameList()+ playerD.get_dTNameList()
