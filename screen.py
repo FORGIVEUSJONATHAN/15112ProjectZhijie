@@ -15,8 +15,7 @@ class wnd1:
         icon = pygame.image.load("pic/tile_type4_300ppi/4-33.png")
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode((1200, 800),pygame.RESIZABLE)
-
-        start = pygame.image.load("pic/Start.png")
+        start = pygame.image.load("pic/Start.png") # start button
         start = pygame.transform.scale(start, (200, 100))
         startRect = start.get_rect()
         startRect.centerx = screen.get_rect().centerx
@@ -36,7 +35,7 @@ class wnd1:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if startRect.collidepoint(event.pos):
+                    if startRect.collidepoint(event.pos): # clicking the start button will enter the game
                         wnd2(screen)
             pygame.display.update()
 
